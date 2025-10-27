@@ -62,3 +62,12 @@ body {
   }
 }
 
+/* Ensure Clerk UserButton dropdown appears properly */
+.cl-userButtonPopoverCard {
+  z-index: 9999 !important;
+}
+
+.cl-userButtonPopoverCard .cl-userButtonPopoverActions {
+  z-index: 9999 !important;
+}
+

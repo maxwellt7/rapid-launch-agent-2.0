@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { SignedIn, SignedOut } from '@clerk/clerk-react';
 import Landing from './pages/Landing';
 import OfferBuilder from './pages/OfferBuilder';
 import AvatarBuilder from './pages/AvatarBuilder';
@@ -20,11 +21,13 @@ function App() {
         <Route
           path="/project"
           element={
-            currentProject ? (
-              <Layout />
-            ) : (
-              <Navigate to="/" replace />
-            )
+            <SignedIn>
+              {currentProject ? (
+                <Layout />
+              ) : (
+                <Navigate to="/" replace />
+              )}
+            </SignedIn>
           }
         >
           <Route path="offer" element={<OfferBuilder />} />

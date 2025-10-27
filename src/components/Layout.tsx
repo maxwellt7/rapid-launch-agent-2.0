@@ -1,4 +1,6 @@
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
+import { useClerk, useUser } from '@clerk/clerk-react';
+import { useState, useEffect, useRef } from 'react';
 import { useProjectStore } from '../store/useProjectStore';
 import { 
   Rocket, 
@@ -8,7 +10,8 @@ import {
   Brain, 
   FileText,
   LayoutDashboard,
-  ChevronRight
+  ChevronRight,
+  LogOut
 } from 'lucide-react';
 import { clsx } from 'clsx';
 
@@ -23,8 +26,33 @@ const steps = [
 export default function Layout() {
   const navigate = useNavigate();
   const location = useLocation();
+  const { signOut } = useClerk();
+  const { user } = useUser();
+  const [showUserMenu, setShowUserMenu] = useState(false);
+  const userMenuRef = useRef<HTMLDivElement>(null);
   const currentProject = useProjectStore((state) => state.currentProject);
   const currentStep = currentProject?.currentStep || 1;
+
+  const handleSignOut = () => {
+    signOut();
+  };
+
+  // Close menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (userMenuRef.current && !userMenuRef.current.contains(event.target as Node)) {
+        setShowUserMenu(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  // Debug: Log user info to console
+  console.log('User info:', user);
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -39,13 +67,49 @@ export default function Layout() {
                 <p className="text-sm text-gray-500">{currentProject?.name}</p>
               </div>
             </div>
-            <button
-              onClick={() => navigate('/project/dashboard')}
-              className="btn btn-outline flex items-center space-x-2"
-            >
-              <LayoutDashboard className="w-4 h-4" />
-              <span>Dashboard</span>
-            </button>
+            <div className="flex items-center space-x-4">
+              <button
+                onClick={() => navigate('/project/dashboard')}
+                className="btn btn-outline flex items-center space-x-2"
+              >
+                <LayoutDashboard className="w-4 h-4" />
+                <span>Dashboard</span>
+              </button>
+              {/* Custom User Menu */}
+              <div className="relative" ref={userMenuRef}>
+                <button
+                  onClick={() => setShowUserMenu(!showUserMenu)}
+                  className="flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-100 transition-colors"
+                >
+                  <div className="w-8 h-8 bg-primary-600 rounded-full flex items-center justify-center text-white text-sm font-medium">
+                    {user?.firstName?.charAt(0) || user?.emailAddresses?.[0]?.emailAddress?.charAt(0) || 'U'}
+                  </div>
+                  <span className="hidden md:block text-sm font-medium text-gray-700">
+                    {user?.firstName || user?.emailAddresses?.[0]?.emailAddress || 'User'}
+                  </span>
+                </button>
+                
+                {showUserMenu && (
+                  <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50">
+                    <div className="px-4 py-2 border-b border-gray-100">
+                      <p className="text-sm font-medium text-gray-900">
+                        {user?.firstName} {user?.lastName}
+                      </p>
+                      <p className="text-xs text-gray-500">
+                        {user?.emailAddresses?.[0]?.emailAddress}
+                      </p>
+                    </div>
+                    <button
+                      onClick={handleSignOut}
+                      className="w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-red-50 flex items-center space-x-2"
+                    >
+                      <LogOut className="w-4 h-4" />
+                      <span>Sign out</span>
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
           </div>
         </div>
       </header>

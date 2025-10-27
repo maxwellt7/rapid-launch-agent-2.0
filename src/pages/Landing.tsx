@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { SignedIn, SignedOut, SignInButton, SignUpButton } from '@clerk/clerk-react';
 import { useProjectStore } from '../store/useProjectStore';
 import { Rocket, Target, Users, TrendingUp, Brain, FileText, Plus, FolderOpen } from 'lucide-react';
 
@@ -84,9 +85,30 @@ export default function Landing() {
           </div>
         </div>
 
+        {/* Authentication Section */}
+        <SignedOut>
+          <div className="max-w-2xl mx-auto mb-8">
+            <div className="card text-center">
+              <h2 className="text-2xl font-bold mb-4">Get Started</h2>
+              <p className="text-gray-600 mb-6">
+                Sign in to create and manage your projects
+              </p>
+              <div className="flex space-x-4 justify-center">
+                <SignInButton mode="modal">
+                  <button className="btn btn-primary">Sign In</button>
+                </SignInButton>
+                <SignUpButton mode="modal">
+                  <button className="btn btn-outline">Sign Up</button>
+                </SignUpButton>
+              </div>
+            </div>
+          </div>
+        </SignedOut>
+
         {/* Action Section */}
-        <div className="max-w-2xl mx-auto">
-          {!showNewProject && projects.length > 0 && (
+        <SignedIn>
+          <div className="max-w-2xl mx-auto">
+            {!showNewProject && projects.length > 0 && (
             <div className="card mb-6">
               <h2 className="text-2xl font-bold mb-4 flex items-center">
                 <FolderOpen className="w-6 h-6 mr-2" />
@@ -114,45 +136,46 @@ export default function Landing() {
             </div>
           )}
 
-          <div className="card">
-            {!showNewProject ? (
-              <button
-                onClick={() => setShowNewProject(true)}
-                className="btn btn-primary w-full flex items-center justify-center space-x-2 text-lg py-4"
-              >
-                <Plus className="w-6 h-6" />
-                <span>Create New Project</span>
-              </button>
-            ) : (
-              <form onSubmit={handleCreateProject}>
-                <h2 className="text-2xl font-bold mb-4">Create New Project</h2>
-                <div className="mb-4">
-                  <label className="label">Project Name</label>
-                  <input
-                    type="text"
-                    value={projectName}
-                    onChange={(e) => setProjectName(e.target.value)}
-                    placeholder="e.g., SaaS Product Launch Q1 2024"
-                    className="input"
-                    autoFocus
-                  />
-                </div>
-                <div className="flex space-x-3">
-                  <button type="submit" className="btn btn-primary flex-1">
-                    Create & Start
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setShowNewProject(false)}
-                    className="btn btn-secondary"
-                  >
-                    Cancel
-                  </button>
-                </div>
-              </form>
-            )}
+            <div className="card">
+              {!showNewProject ? (
+                <button
+                  onClick={() => setShowNewProject(true)}
+                  className="btn btn-primary w-full flex items-center justify-center space-x-2 text-lg py-4"
+                >
+                  <Plus className="w-6 h-6" />
+                  <span>Create New Project</span>
+                </button>
+              ) : (
+                <form onSubmit={handleCreateProject}>
+                  <h2 className="text-2xl font-bold mb-4">Create New Project</h2>
+                  <div className="mb-4">
+                    <label className="label">Project Name</label>
+                    <input
+                      type="text"
+                      value={projectName}
+                      onChange={(e) => setProjectName(e.target.value)}
+                      placeholder="e.g., SaaS Product Launch Q1 2024"
+                      className="input"
+                      autoFocus
+                    />
+                  </div>
+                  <div className="flex space-x-3">
+                    <button type="submit" className="btn btn-primary flex-1">
+                      Create & Start
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setShowNewProject(false)}
+                      className="btn btn-secondary"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </form>
+              )}
+            </div>
           </div>
-        </div>
+        </SignedIn>
       </div>
     </div>
   );
