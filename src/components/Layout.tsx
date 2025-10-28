@@ -1,5 +1,5 @@
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
-import { useClerk, useUser } from '@clerk/clerk-react';
+import { useClerk, useUser, SignInButton, SignUpButton } from '@clerk/clerk-react';
 import { useState, useEffect, useRef } from 'react';
 import { useProjectStore } from '../store/useProjectStore';
 import { 
@@ -32,6 +32,9 @@ export default function Layout() {
   const userMenuRef = useRef<HTMLDivElement>(null);
   const currentProject = useProjectStore((state) => state.currentProject);
   const currentStep = currentProject?.currentStep || 1;
+  
+  // Check if we're on the landing page
+  const isLandingPage = location.pathname === '/';
 
   const handleSignOut = () => {
     signOut();
@@ -51,75 +54,90 @@ export default function Layout() {
     };
   }, []);
 
-  // Debug: Log user info to console
-  console.log('User info:', user);
-
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className={isLandingPage ? "min-h-screen bg-gradient-to-br from-primary-50 via-white to-primary-50" : "min-h-screen bg-gray-50"}>
       {/* Top Navigation */}
       <header className="bg-white border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
-            <div className="flex items-center space-x-3">
+            <div className="flex items-center space-x-3 cursor-pointer" onClick={() => navigate('/')}>
               <Rocket className="w-8 h-8 text-primary-600" />
               <div>
                 <h1 className="text-xl font-bold text-gray-900">Rapid Launch Agent</h1>
-                <p className="text-sm text-gray-500">{currentProject?.name}</p>
+                {!isLandingPage && currentProject && (
+                  <p className="text-sm text-gray-500">{currentProject.name}</p>
+                )}
               </div>
             </div>
             <div className="flex items-center space-x-4">
-              <button
-                onClick={() => navigate('/project/dashboard')}
-                className="btn btn-outline flex items-center space-x-2"
-              >
-                <LayoutDashboard className="w-4 h-4" />
-                <span>Dashboard</span>
-              </button>
-              {/* Custom User Menu */}
-              <div className="relative" ref={userMenuRef}>
+              {!isLandingPage && currentProject && (
                 <button
-                  onClick={() => setShowUserMenu(!showUserMenu)}
-                  className="flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-100 transition-colors"
+                  onClick={() => navigate('/project/dashboard')}
+                  className="btn btn-outline flex items-center space-x-2"
                 >
-                  <div className="w-8 h-8 bg-primary-600 rounded-full flex items-center justify-center text-white text-sm font-medium">
-                    {user?.firstName?.charAt(0) || user?.emailAddresses?.[0]?.emailAddress?.charAt(0) || 'U'}
-                  </div>
-                  <span className="hidden md:block text-sm font-medium text-gray-700">
-                    {user?.firstName || user?.emailAddresses?.[0]?.emailAddress || 'User'}
-                  </span>
+                  <LayoutDashboard className="w-4 h-4" />
+                  <span>Dashboard</span>
                 </button>
-                
-                {showUserMenu && (
-                  <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50">
-                    <div className="px-4 py-2 border-b border-gray-100">
-                      <p className="text-sm font-medium text-gray-900">
-                        {user?.firstName} {user?.lastName}
-                      </p>
-                      <p className="text-xs text-gray-500">
-                        {user?.emailAddresses?.[0]?.emailAddress}
-                      </p>
+              )}
+              
+              {/* Show Sign In/Sign Up buttons when user is not authenticated */}
+              {!user ? (
+                <div className="flex items-center space-x-3">
+                  <SignInButton mode="modal">
+                    <button className="btn btn-outline">Sign In</button>
+                  </SignInButton>
+                  <SignUpButton mode="modal">
+                    <button className="btn btn-primary">Sign Up</button>
+                  </SignUpButton>
+                </div>
+              ) : (
+                /* Custom User Menu - Show when authenticated */
+                <div className="relative" ref={userMenuRef}>
+                  <button
+                    onClick={() => setShowUserMenu(!showUserMenu)}
+                    className="flex items-center space-x-2 p-2 rounded-lg hover:bg-gray-100 transition-colors"
+                  >
+                    <div className="w-8 h-8 bg-primary-600 rounded-full flex items-center justify-center text-white text-sm font-medium">
+                      {user?.firstName?.charAt(0) || user?.emailAddresses?.[0]?.emailAddress?.charAt(0) || 'U'}
                     </div>
-                    <button
-                      onClick={handleSignOut}
-                      className="w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-red-50 flex items-center space-x-2"
-                    >
-                      <LogOut className="w-4 h-4" />
-                      <span>Sign out</span>
-                    </button>
-                  </div>
-                )}
-              </div>
+                    <span className="hidden md:block text-sm font-medium text-gray-700">
+                      {user?.firstName || user?.emailAddresses?.[0]?.emailAddress || 'User'}
+                    </span>
+                  </button>
+                  
+                  {showUserMenu && (
+                    <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50">
+                      <div className="px-4 py-2 border-b border-gray-100">
+                        <p className="text-sm font-medium text-gray-900">
+                          {user?.firstName} {user?.lastName}
+                        </p>
+                        <p className="text-xs text-gray-500">
+                          {user?.emailAddresses?.[0]?.emailAddress}
+                        </p>
+                      </div>
+                      <button
+                        onClick={handleSignOut}
+                        className="w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-red-50 flex items-center space-x-2"
+                      >
+                        <LogOut className="w-4 h-4" />
+                        <span>Sign out</span>
+                      </button>
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
           </div>
         </div>
       </header>
 
-      {/* Progress Steps */}
-      <div className="bg-white border-b border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <nav aria-label="Progress">
-            <ol className="flex items-center justify-between">
-              {steps.map((step, index) => {
+      {/* Progress Steps - Only show on project pages */}
+      {!isLandingPage && (
+        <div className="bg-white border-b border-gray-200">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <nav aria-label="Progress">
+              <ol className="flex items-center justify-between">
+                {steps.map((step, index) => {
                 const isComplete = currentStep > step.id;
                 const isCurrent = location.pathname === step.path;
                 const isAccessible = step.id <= currentStep;
@@ -161,13 +179,14 @@ export default function Layout() {
                   </li>
                 );
               })}
-            </ol>
-          </nav>
+              </ol>
+            </nav>
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className={isLandingPage ? "" : "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8"}>
         <Outlet />
       </main>
     </div>

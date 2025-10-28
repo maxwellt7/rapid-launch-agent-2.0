@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { SignedIn, SignedOut } from '@clerk/clerk-react';
+import { useAuth } from '@clerk/clerk-react';
 import Landing from './pages/Landing';
 import OfferBuilder from './pages/OfferBuilder';
 import AvatarBuilder from './pages/AvatarBuilder';
@@ -11,23 +11,52 @@ import Dashboard from './pages/Dashboard';
 import Layout from './components/Layout';
 import { useProjectStore } from './store/useProjectStore';
 
-function App() {
+// Protected Route Component
+function ProtectedRoute({ children }: { children: React.ReactNode }) {
+  const { isSignedIn, isLoaded } = useAuth();
   const currentProject = useProjectStore((state) => state.currentProject);
 
+  // Wait for Clerk to load
+  if (!isLoaded) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Redirect to landing if not signed in
+  if (!isSignedIn) {
+    return <Navigate to="/" replace />;
+  }
+
+  // Redirect to landing if no project selected
+  if (!currentProject) {
+    return <Navigate to="/" replace />;
+  }
+
+  return <>{children}</>;
+}
+
+function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Landing />} />
+        {/* Landing page with Layout */}
+        <Route element={<Layout />}>
+          <Route path="/" element={<Landing />} />
+        </Route>
+
+        {/* Project pages with Layout - require authentication and project */}
         <Route
           path="/project"
           element={
-            <SignedIn>
-              {currentProject ? (
-                <Layout />
-              ) : (
-                <Navigate to="/" replace />
-              )}
-            </SignedIn>
+            <ProtectedRoute>
+              <Layout />
+            </ProtectedRoute>
           }
         >
           <Route path="offer" element={<OfferBuilder />} />

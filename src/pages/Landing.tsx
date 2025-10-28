@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { SignedIn, SignedOut, SignInButton, SignUpButton } from '@clerk/clerk-react';
+import { SignedIn } from '@clerk/clerk-react';
 import { useProjectStore } from '../store/useProjectStore';
 import { Rocket, Target, Users, TrendingUp, Brain, FileText, Plus, FolderOpen } from 'lucide-react';
 
@@ -24,8 +24,7 @@ export default function Landing() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary-50 via-white to-primary-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Hero Section */}
         <div className="text-center mb-16">
           <div className="flex items-center justify-center mb-6">
@@ -35,7 +34,7 @@ export default function Landing() {
             Rapid Launch Agent
           </h1>
           <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-          You’re sitting a $1m+ idea. The Rapid Launch Agent turns your million dollar idea into a million dollar business in 72 hours.
+          You're sitting a $1m+ idea. The Rapid Launch Agent turns your million dollar idea into a million dollar business in 72 hours.
           </p>
         </div>
 
@@ -85,27 +84,7 @@ export default function Landing() {
           </div>
         </div>
 
-        {/* Authentication Section */}
-        <SignedOut>
-          <div className="max-w-2xl mx-auto mb-8">
-            <div className="card text-center">
-              <h2 className="text-2xl font-bold mb-4">Get Started</h2>
-              <p className="text-gray-600 mb-6">
-                Sign in to create and manage your projects
-              </p>
-              <div className="flex space-x-4 justify-center">
-                <SignInButton mode="modal">
-                  <button className="btn btn-primary">Sign In</button>
-                </SignInButton>
-                <SignUpButton mode="modal">
-                  <button className="btn btn-outline">Sign Up</button>
-                </SignUpButton>
-              </div>
-            </div>
-          </div>
-        </SignedOut>
-
-        {/* Action Section */}
+        {/* Project Management Section - Only for signed in users */}
         <SignedIn>
           <div className="max-w-2xl mx-auto">
             {!showNewProject && projects.length > 0 && (
@@ -176,7 +155,6 @@ export default function Landing() {
             </div>
           </div>
         </SignedIn>
-      </div>
     </div>
   );
 }
