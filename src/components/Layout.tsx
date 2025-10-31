@@ -2,12 +2,12 @@ import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { useClerk, useUser, SignInButton, SignUpButton } from '@clerk/clerk-react';
 import { useState, useEffect, useRef } from 'react';
 import { useProjectStore } from '../store/useProjectStore';
-import { 
-  Rocket, 
-  Target, 
-  Users, 
-  TrendingUp, 
-  Brain, 
+import {
+  Rocket,
+  Target,
+  Users,
+  TrendingUp,
+  Brain,
   FileText,
   LayoutDashboard,
   ChevronRight,
@@ -26,15 +26,23 @@ const steps = [
 export default function Layout() {
   const navigate = useNavigate();
   const location = useLocation();
-  const { signOut } = useClerk();
+  const { signOut, user: clerkUser } = useClerk();
   const { user } = useUser();
   const [showUserMenu, setShowUserMenu] = useState(false);
   const userMenuRef = useRef<HTMLDivElement>(null);
   const currentProject = useProjectStore((state) => state.currentProject);
   const currentStep = currentProject?.currentStep || 1;
-  
-  // Check if we're on the landing page
+
+  // Check if we're on the landing page or home page
   const isLandingPage = location.pathname === '/';
+  const isHomePage = location.pathname === '/home';
+
+  // Redirect authenticated users from landing to home
+  useEffect(() => {
+    if (isLandingPage && clerkUser) {
+      navigate('/home', { replace: true });
+    }
+  }, [isLandingPage, clerkUser, navigate]);
 
   const handleSignOut = () => {
     signOut();
@@ -55,22 +63,22 @@ export default function Layout() {
   }, []);
 
   return (
-    <div className={isLandingPage ? "min-h-screen bg-gradient-to-br from-primary-50 via-white to-primary-50" : "min-h-screen bg-gray-50"}>
+    <div className={isLandingPage || isHomePage ? "min-h-screen bg-gradient-to-br from-primary-50 via-white to-primary-50" : "min-h-screen bg-gray-50"}>
       {/* Top Navigation */}
       <header className="bg-white border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
-            <div className="flex items-center space-x-3 cursor-pointer" onClick={() => navigate('/')}>
+            <div className="flex items-center space-x-3 cursor-pointer" onClick={() => navigate(clerkUser ? '/home' : '/')}>
               <Rocket className="w-8 h-8 text-primary-600" />
               <div>
                 <h1 className="text-xl font-bold text-gray-900">Rapid Launch Agent</h1>
-                {!isLandingPage && currentProject && (
+                {!isLandingPage && !isHomePage && currentProject && (
                   <p className="text-sm text-gray-500">{currentProject.name}</p>
                 )}
               </div>
             </div>
             <div className="flex items-center space-x-4">
-              {!isLandingPage && currentProject && (
+              {!isLandingPage && !isHomePage && currentProject && (
                 <button
                   onClick={() => navigate('/project/dashboard')}
                   className="btn btn-outline flex items-center space-x-2"
@@ -79,7 +87,7 @@ export default function Layout() {
                   <span>Dashboard</span>
                 </button>
               )}
-              
+
               {/* Show Sign In/Sign Up buttons when user is not authenticated */}
               {!user ? (
                 <div className="flex items-center space-x-3">
@@ -104,7 +112,7 @@ export default function Layout() {
                       {user?.firstName || user?.emailAddresses?.[0]?.emailAddress || 'User'}
                     </span>
                   </button>
-                  
+
                   {showUserMenu && (
                     <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50">
                       <div className="px-4 py-2 border-b border-gray-100">
@@ -130,9 +138,8 @@ export default function Layout() {
           </div>
         </div>
       </header>
-
       {/* Progress Steps - Only show on project pages */}
-      {!isLandingPage && (
+      {!isLandingPage && !isHomePage && (
         <div className="bg-white border-b border-gray-200">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
             <nav aria-label="Progress">
@@ -142,7 +149,6 @@ export default function Layout() {
                 const isCurrent = location.pathname === step.path;
                 const isAccessible = step.id <= currentStep;
                 const Icon = step.icon;
-
                 return (
                   <li key={step.id} className="flex items-center">
                     <button
@@ -186,7 +192,7 @@ export default function Layout() {
       )}
 
       {/* Main Content */}
-      <main className={isLandingPage ? "" : "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8"}>
+      <main className={isLandingPage || isHomePage ? "" : "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8"}>
         <Outlet />
       </main>
     </div>

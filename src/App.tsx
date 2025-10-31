@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { useAuth } from '@clerk/clerk-react';
 import Landing from './pages/Landing';
+import Home from './pages/Home';
 import OfferBuilder from './pages/OfferBuilder';
 import AvatarBuilder from './pages/AvatarBuilder';
 import CompetitorIntelligence from './pages/CompetitorIntelligence';
@@ -11,8 +12,28 @@ import Dashboard from './pages/Dashboard';
 import Layout from './components/Layout';
 import { useProjectStore } from './store/useProjectStore';
 
-// Protected Route Component
-function ProtectedRoute({ children }: { children: React.ReactNode }) {
+function ProtectedRouteWithoutProject({ children }: { children: React.ReactNode }) {
+  const { isSignedIn, isLoaded } = useAuth();
+
+  if (!isLoaded) {
+    return (
+        <div className="min-h-screen flex items-center justify-center">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto"></div>
+            <p className="mt-4 text-gray-600">Loading...</p>
+          </div>
+        </div>
+    );
+  }
+
+  if (!isSignedIn) {
+    return <Navigate to="/" replace />;
+  }
+
+  return <>{children}</>;
+}
+
+function ProtectedRouteWithProject({ children }: { children: React.ReactNode }) {
   const { isSignedIn, isLoaded } = useAuth();
   const currentProject = useProjectStore((state) => state.currentProject);
 
@@ -33,9 +54,9 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
     return <Navigate to="/" replace />;
   }
 
-  // Redirect to landing if no project selected
+  // Redirect to home if no project selected
   if (!currentProject) {
-    return <Navigate to="/" replace />;
+    return <Navigate to="/home" replace />;
   }
 
   return <>{children}</>;
@@ -45,18 +66,22 @@ function App() {
   return (
     <Router>
       <Routes>
-        {/* Landing page with Layout */}
         <Route element={<Layout />}>
           <Route path="/" element={<Landing />} />
+          {/*These routes for if user is sign in but project not selected*/}
+          <Route path="/home" element={
+            <ProtectedRouteWithoutProject>
+              <Home />
+            </ProtectedRouteWithoutProject>
+          } />
         </Route>
-
-        {/* Project pages with Layout - require authentication and project */}
+        {/*These routes for if projected is selected and user is sign in*/}
         <Route
           path="/project"
           element={
-            <ProtectedRoute>
+            <ProtectedRouteWithProject>
               <Layout />
-            </ProtectedRoute>
+            </ProtectedRouteWithProject>
           }
         >
           <Route path="offer" element={<OfferBuilder />} />
