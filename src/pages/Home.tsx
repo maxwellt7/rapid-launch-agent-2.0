@@ -13,7 +13,6 @@ export default function Home() {
     } else {
       // Create a new project and redirect
       const projectName = `Project ${new Date().toLocaleDateString()}`;
-      createProject(projectName);
       navigate('/project/offer');
     }
   };
