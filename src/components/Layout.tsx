@@ -36,6 +36,7 @@ export default function Layout() {
   // Check if we're on the landing page or home page
   const isLandingPage = location.pathname === '/';
   const isHomePage = location.pathname === '/home';
+  const isProjectPage = location.pathname === '/projectList';
 
   // Redirect authenticated users from landing to home
   useEffect(() => {
@@ -139,7 +140,7 @@ export default function Layout() {
         </div>
       </header>
       {/* Progress Steps - Only show on project pages */}
-      {!isLandingPage && !isHomePage && (
+      {!isLandingPage && !isHomePage && !isProjectPage && (
         <div className="bg-white border-b border-gray-200">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
             <nav aria-label="Progress">

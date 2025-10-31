@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { useAuth } from '@clerk/clerk-react';
 import Landing from './pages/Landing';
 import Home from './pages/Home';
+import Projects from './pages/Projects';
 import OfferBuilder from './pages/OfferBuilder';
 import AvatarBuilder from './pages/AvatarBuilder';
 import CompetitorIntelligence from './pages/CompetitorIntelligence';
@@ -72,6 +73,11 @@ function App() {
           <Route path="/home" element={
             <ProtectedRouteWithoutProject>
               <Home />
+            </ProtectedRouteWithoutProject>
+          } />
+          <Route path="/projectList" element={
+            <ProtectedRouteWithoutProject>
+              <Projects />
             </ProtectedRouteWithoutProject>
           } />
         </Route>

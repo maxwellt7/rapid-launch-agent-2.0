@@ -4,21 +4,21 @@ import { Target, TrendingUp, Zap, Rocket, ArrowRight } from 'lucide-react';
 
 export default function Home() {
   const navigate = useNavigate();
-  const { projects, createProject } = useProjectStore();
+  const { projects } = useProjectStore();
 
   const handleGetStarted = () => {
-    // If user already has projects, go to offer builder
-    if (projects.length > 0) {
-      navigate('/project/offer');
-    } else {
-      // Create a new project and redirect
-      const projectName = `Project ${new Date().toLocaleDateString()}`;
-      navigate('/project/offer');
-    }
+    // Navigate to projects page
+    navigate('/projectList');
   };
 
   const handleViewDashboard = () => {
-    navigate('/project/dashboard');
+    // If user has projects, go to dashboard
+    if (projects.length > 0) {
+      navigate('/project/dashboard');
+    } else {
+      // If no projects, go to projects page to create one
+      navigate('/projectList');
+    }
   };
 
   return (

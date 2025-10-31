@@ -1,28 +1,6 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { SignedIn } from '@clerk/clerk-react';
-import { useProjectStore } from '../store/useProjectStore';
-import { Rocket, Target, Users, TrendingUp, Brain, FileText, Plus, FolderOpen } from 'lucide-react';
+import { Rocket, Target, Users, TrendingUp, Brain, FileText } from 'lucide-react';
 
 export default function Landing() {
-  const [projectName, setProjectName] = useState('');
-  const [showNewProject, setShowNewProject] = useState(false);
-  const navigate = useNavigate();
-  const { projects, createProject, loadProject } = useProjectStore();
-
-  const handleCreateProject = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (projectName.trim()) {
-      createProject(projectName);
-      navigate('/project/offer');
-    }
-  };
-
-  const handleLoadProject = (id: string) => {
-    loadProject(id);
-    navigate('/project/offer');
-  };
-
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Hero Section */}
@@ -83,78 +61,6 @@ export default function Landing() {
             </p>
           </div>
         </div>
-
-        {/* Project Management Section - Only for signed in users */}
-        <SignedIn>
-          <div className="max-w-2xl mx-auto">
-            {!showNewProject && projects.length > 0 && (
-            <div className="card mb-6">
-              <h2 className="text-2xl font-bold mb-4 flex items-center">
-                <FolderOpen className="w-6 h-6 mr-2" />
-                Your Projects
-              </h2>
-              <div className="space-y-3">
-                {projects.map((project) => (
-                  <button
-                    key={project.id}
-                    onClick={() => handleLoadProject(project.id)}
-                    className="w-full p-4 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors text-left"
-                  >
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <h3 className="font-semibold text-gray-900">{project.name}</h3>
-                        <p className="text-sm text-gray-500">
-                          Step {project.currentStep} of 5 • Updated {new Date(project.updatedAt).toLocaleDateString()}
-                        </p>
-                      </div>
-                      <div className="text-primary-600">→</div>
-                    </div>
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
-
-            <div className="card">
-              {!showNewProject ? (
-                <button
-                  onClick={() => setShowNewProject(true)}
-                  className="btn btn-primary w-full flex items-center justify-center space-x-2 text-lg py-4"
-                >
-                  <Plus className="w-6 h-6" />
-                  <span>Create New Project</span>
-                </button>
-              ) : (
-                <form onSubmit={handleCreateProject}>
-                  <h2 className="text-2xl font-bold mb-4">Create New Project</h2>
-                  <div className="mb-4">
-                    <label className="label">Project Name</label>
-                    <input
-                      type="text"
-                      value={projectName}
-                      onChange={(e) => setProjectName(e.target.value)}
-                      placeholder="e.g., SaaS Product Launch Q1 2024"
-                      className="input"
-                      autoFocus
-                    />
-                  </div>
-                  <div className="flex space-x-3">
-                    <button type="submit" className="btn btn-primary flex-1">
-                      Create & Start
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setShowNewProject(false)}
-                      className="btn btn-secondary"
-                    >
-                      Cancel
-                    </button>
-                  </div>
-                </form>
-              )}
-            </div>
-          </div>
-        </SignedIn>
     </div>
   );
 }
