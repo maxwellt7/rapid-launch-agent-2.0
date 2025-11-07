@@ -90,7 +90,7 @@ export default function Dashboard() {
     },
     {
       id: 4,
-      name: 'AI Avatar Manifold',
+      name: 'Avatar Bible',
       icon: Brain,
       path: '/project/manifold',
       complete: !!currentProject?.manifold,
@@ -222,7 +222,7 @@ export default function Dashboard() {
               type="text"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              placeholder="e.g., Generate 10 Facebook ad headlines"
+              placeholder="Make sure formatting is generated correctly"
               className="input flex-1"
               disabled={loading}
             />

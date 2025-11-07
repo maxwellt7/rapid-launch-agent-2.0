@@ -19,7 +19,7 @@ const steps = [
   { id: 1, name: 'Offer Builder', path: '/project/offer', icon: Target },
   { id: 2, name: 'Avatar Builder', path: '/project/avatar', icon: Users },
   { id: 3, name: 'Competitor Intelligence', path: '/project/competitors', icon: TrendingUp },
-  { id: 4, name: 'AI Avatar Manifold', path: '/project/manifold', icon: Brain },
+  { id: 4, name: 'Avatar Bible', path: '/project/manifold', icon: Brain },
   { id: 5, name: 'Launch Document', path: '/project/launch-doc', icon: FileText },
 ];
 

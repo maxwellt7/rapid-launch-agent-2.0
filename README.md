@@ -7,7 +7,7 @@ An AI-powered marketing automation system that guides you through creating compr
 - **Offer Builder**: Analyze and optimize your offer using the Irresistible Offer Equation
 - **Avatar Builder**: Deep avatar research using WEB Analysis (Wants, Emotions, Beliefs)
 - **Competitor Intelligence**: Forensic market analysis and strategic positioning
-- **AI Avatar Manifold**: 14-node workflow generating deep psychological insights
+- **Avatar Bible**: 14-node workflow generating deep psychological insights
 - **Launch Document Generator**: Comprehensive 38+ section marketing brief
 - **AI Query Interface**: Ask questions and generate copy from your launch document
 
@@ -143,7 +143,7 @@ rapid-launch-agent/
 - Review positioning angles and insights
 - Save and continue
 
-**Step 4: AI Avatar Manifold**
+**Step 4: Avatar Bible**
 - Review your inputs
 - Click "Run Workflow"
 - Wait for all 14 nodes to process (2-5 minutes)

@@ -167,7 +167,7 @@ export default function LaunchDocument() {
               <h1 className="text-3xl font-bold text-gray-900">Launch Document</h1>
             </div>
             <p className="text-gray-600">
-              Comprehensive 38+ section marketing brief using Todd Brown's E5 VSL methodology
+              Comprehensive 38+ section with professional insights to deliver world class marketing in under 35 minutes.
             </p>
           </div>
           

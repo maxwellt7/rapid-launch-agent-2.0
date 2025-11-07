@@ -37,7 +37,7 @@ The Rapid Launch Agent is an AI-powered marketing automation system that guides 
 │  └──────────────┘  └──────────────┘  └──────────────┘      │
 │          ↓                 ↓                  ↓              │
 │  ┌──────────────────────────────────────────────────┐      │
-│  │        AI Avatar Manifold Workflow Engine        │      │
+│  │        Avatar Bible Workflow Engine        │      │
 │  └──────────────────────────────────────────────────┘      │
 │          ↓                                                   │
 │  ┌──────────────────────────────────────────────────┐      │
@@ -130,7 +130,7 @@ The Rapid Launch Agent is an AI-powered marketing automation system that guides 
 - MVP feature recommendations
 - Week 1 distribution strategy
 
-### Module 4: AI Avatar Manifold
+### Module 4: Avatar Bible
 
 **Purpose:** Run the 14-node workflow to generate deep psychological insights
 
@@ -242,7 +242,7 @@ The Rapid Launch Agent is an AI-powered marketing automation system that guides 
    - View competitive analysis
    - Save and continue
    ↓
-6. Step 4: AI Avatar Manifold
+6. Step 4: Avatar Bible
    - Review inputs from Steps 1-3
    - Initiate 14-node workflow
    - Monitor progress (with loading states)

@@ -85,7 +85,7 @@ export default function Manifold() {
       <div className="mb-8">
         <div className="flex items-center space-x-3 mb-2">
           <Brain className="w-8 h-8 text-primary-600" />
-          <h1 className="text-3xl font-bold text-gray-900">AI Avatar Manifold</h1>
+          <h1 className="text-3xl font-bold text-gray-900">Avatar Bible</h1>
         </div>
         <p className="text-gray-600">
           Run the 14-node workflow to generate deep psychological insights, hooks, stories, and copywriting frameworks.

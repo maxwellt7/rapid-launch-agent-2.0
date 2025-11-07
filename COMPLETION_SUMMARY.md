@@ -9,7 +9,7 @@ A complete full-stack AI-powered marketing automation system with:
 - **Offer Builder** - Irresistible Offer Equation analysis
 - **Avatar Builder** - WEB Analysis with empathy mapping
 - **Competitor Intelligence** - Market analysis and positioning
-- **AI Avatar Manifold** - 14-node workflow with real-time progress
+- **Avatar Bible** - 14-node workflow with real-time progress
 - **Launch Document** - 38+ section comprehensive marketing brief
 - **Dashboard** - Project overview and AI query interface
 - **Layout System** - Progressive workflow with step tracking

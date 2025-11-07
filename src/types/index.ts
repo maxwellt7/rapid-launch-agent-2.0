@@ -149,7 +149,7 @@ export interface MarketIntelligence {
   threats: string[];
 }
 
-// AI Avatar Manifold Types
+// Avatar Bible Types
 export interface ManifoldData {
   buildABuyer: string;
   painMatrix: string;
