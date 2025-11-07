@@ -127,7 +127,7 @@ export default function AvatarBuilder() {
 
   const tabs = [
     { id: 'demographics', label: 'Demographics' },
-    { id: 'web', label: 'WEB Analysis' },
+    { id: 'web', label: 'Desire Chain' },
     { id: 'empathy', label: 'Empathy Map' },
     { id: 'goals', label: 'Goals Grid' },
   ];
@@ -140,7 +140,7 @@ export default function AvatarBuilder() {
           <h1 className="text-3xl font-bold text-gray-900">Avatar Builder</h1>
         </div>
         <p className="text-gray-600">
-          Deep avatar research using Todd Brown's WEB Analysis (Wants, Emotions, Beliefs)
+          Deepest dive possible on your ideal client profile.
         </p>
       </div>
 
