@@ -1,6 +1,10 @@
-import { Rocket, Target, Users, TrendingUp, Brain, FileText } from 'lucide-react';
+import { Rocket, Target, Users, TrendingUp, Brain, FileText, ArrowRight } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import { SignUpButton } from '@clerk/clerk-react';
 
 export default function Landing() {
+  const navigate = useNavigate();
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Hero Section */}
@@ -11,9 +15,23 @@ export default function Landing() {
           <h1 className="text-5xl font-bold text-gray-900 mb-4">
             Rapid Launch Agent
           </h1>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+          <p className="text-xl text-gray-600 max-w-2xl mx-auto mb-8">
           You're sitting a $1m+ idea. The Rapid Launch Agent turns your million dollar idea into a million dollar business in 72 hours.
           </p>
+          <div className="flex items-center justify-center space-x-4">
+            <SignUpButton mode="modal">
+              <button className="inline-flex items-center px-8 py-3 bg-primary-600 hover:bg-primary-700 text-white font-semibold rounded-lg transition-colors shadow-lg hover:shadow-xl">
+                <span>Get Started</span>
+                <ArrowRight className="w-5 h-5 ml-2" />
+              </button>
+            </SignUpButton>
+            <button
+              onClick={() => navigate('/pricing')}
+              className="inline-flex items-center px-8 py-3 bg-white hover:bg-gray-50 text-gray-900 font-semibold rounded-lg border-2 border-gray-200 transition-colors"
+            >
+              View Pricing
+            </button>
+          </div>
         </div>
 
         {/* Features Grid */}

@@ -12,6 +12,7 @@ import ProjectSummary from './pages/ProjectSummary';
 import Dashboard from './pages/Dashboard';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import TermsOfService from './pages/TermsOfService';
+import Pricing from './pages/Pricing';
 import Layout from './components/Layout';
 import { useProjectStore } from './store/useProjectStore';
 
@@ -73,6 +74,11 @@ function App() {
           <Route path="/" element={<Landing />} />
           <Route path="/privacy" element={<PrivacyPolicy />} />
           <Route path="/terms" element={<TermsOfService />} />
+          <Route path="/pricing" element={
+            <ProtectedRouteWithoutProject>
+              <Pricing />
+            </ProtectedRouteWithoutProject>
+          } />
           {/*These routes for if user is sign in but project not selected*/}
           <Route path="/home" element={
             <ProtectedRouteWithoutProject>
