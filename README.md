@@ -23,14 +23,14 @@ An AI-powered marketing automation system that guides you through creating compr
 
 ### Backend
 - Node.js + Express
-- OpenAI API integration
+- Anthropic Claude API integration
 - RESTful API architecture
 
 ## Prerequisites
 
 - Node.js 18+ 
 - npm or yarn
-- OpenAI API key ([Get one here](https://platform.openai.com/api-keys))
+- Anthropic API key ([Get one here](https://console.anthropic.com/settings/keys))
 
 ## Installation
 
@@ -51,11 +51,11 @@ An AI-powered marketing automation system that guides you through creating compr
    cp .env.template .env
    ```
    
-   Edit `.env` and add your OpenAI API key:
+   Edit `.env` and add your Anthropic API key:
    ```
-   OPENAI_API_KEY=sk-your-actual-api-key-here
-   GPT_MODEL=gpt-4-turbo-preview
-   GPT_TEMPERATURE=0.7
+   ANTHROPIC_API_KEY=sk-ant-your-actual-api-key-here
+   CLAUDE_MODEL=claude-sonnet-4-5-20250929
+   CLAUDE_TEMPERATURE=0.7
    PORT=5000
    ```
 
@@ -178,15 +178,15 @@ GET  /api/health                     # Health check
 
 | Variable | Description | Default |
 |----------|-------------|---------|
-| `OPENAI_API_KEY` | Your OpenAI API key | Required |
-| `GPT_MODEL` | OpenAI model to use | gpt-4-turbo-preview |
-| `GPT_TEMPERATURE` | AI temperature (0-1) | 0.7 |
+| `ANTHROPIC_API_KEY` | Your Anthropic API key | Required |
+| `CLAUDE_MODEL` | Claude model to use | claude-sonnet-4-5-20250929 |
+| `CLAUDE_TEMPERATURE` | AI temperature (0-1) | 0.7 |
 | `PORT` | Backend server port | 5000 |
 | `VITE_API_URL` | API URL for frontend | /api |
 
 ## Cost Considerations
 
-This application uses OpenAI's API which has associated costs:
+This application uses Anthropic's Claude API which has associated costs:
 
 - **Offer Analysis**: ~$0.10-0.20 per analysis
 - **Avatar Analysis**: ~$0.05-0.10 per analysis
@@ -196,16 +196,16 @@ This application uses OpenAI's API which has associated costs:
 
 **Estimated total per project**: $4-8
 
-Monitor your usage at: https://platform.openai.com/usage
+Monitor your usage at: https://console.anthropic.com/settings/usage
 
 ## Troubleshooting
 
 ### API Key Issues
 ```
-Error: OpenAI API call failed
+Error: Anthropic API call failed
 ```
-- Verify your API key in `.env` is correct
-- Check you have credits in your OpenAI account
+- Verify your ANTHROPIC_API_KEY in `.env` is correct
+- Check you have credits in your Anthropic account
 - Ensure no extra spaces in the API key
 
 ### Port Already in Use
@@ -256,5 +256,5 @@ For issues, questions, or feature requests, please contact the project maintaine
 
 ---
 
-**Built with ❤️ using React, TypeScript, Node.js, and OpenAI**
+**Built with ❤️ using React, TypeScript, Node.js, and Claude AI**
 

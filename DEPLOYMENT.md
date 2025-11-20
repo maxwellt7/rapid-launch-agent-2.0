@@ -58,7 +58,7 @@ Go to **Variables** tab and add:
 
 ```bash
 ANTHROPIC_API_KEY=sk-ant-api03-your-actual-key
-CLAUDE_MODEL=claude-sonnet-4-20250514
+CLAUDE_MODEL=claude-sonnet-4-5-20250929
 CLAUDE_TEMPERATURE=0.7
 PORT=5000
 NODE_ENV=production
@@ -274,7 +274,7 @@ You can manually trigger deployments from GitHub Actions tab.
 ```bash
 # .env (local)
 ANTHROPIC_API_KEY=sk-ant-...
-CLAUDE_MODEL=claude-sonnet-4-20250514
+CLAUDE_MODEL=claude-sonnet-4-5-20250929
 PORT=5000
 ```
 
@@ -283,7 +283,7 @@ PORT=5000
 **Railway (Backend)**
 ```bash
 ANTHROPIC_API_KEY=sk-ant-...
-CLAUDE_MODEL=claude-sonnet-4-20250514
+CLAUDE_MODEL=claude-sonnet-4-5-20250929
 NODE_ENV=production
 PORT=5000
 CORS_ORIGIN=https://your-app.vercel.app

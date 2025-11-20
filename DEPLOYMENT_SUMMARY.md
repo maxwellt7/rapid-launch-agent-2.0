@@ -88,7 +88,7 @@ VITE_API_URL = https://your-backend.railway.app/api
 ### Railway (Backend)
 ```bash
 ANTHROPIC_API_KEY = sk-ant-api03-your-key
-CLAUDE_MODEL = claude-sonnet-4-20250514
+CLAUDE_MODEL = claude-sonnet-4-5-20250929
 NODE_ENV = production
 PORT = 5000
 CORS_ORIGIN = https://your-app.vercel.app

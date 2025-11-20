@@ -108,7 +108,7 @@ rapid-launch-agent/
 ### Railway (Backend)
 ```bash
 ANTHROPIC_API_KEY=sk-ant-api03-your-key     # Required
-CLAUDE_MODEL=claude-sonnet-4-20250514       # Optional
+CLAUDE_MODEL=claude-sonnet-4-5-20250929       # Optional
 NODE_ENV=production                          # Required
 PORT=5000                                    # Optional
 CORS_ORIGIN=https://your-app.vercel.app     # After frontend deploy

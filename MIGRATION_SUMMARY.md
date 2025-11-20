@@ -101,7 +101,7 @@ ANTHROPIC_API_KEY=sk-ant-api03-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
 ## Model Information
 
-**Current Model**: `claude-sonnet-4-20250514`
+**Current Model**: `claude-sonnet-4-5-20250929`
 - Latest Claude Sonnet 4.5 (May 2025)
 - 200,000 token context window
 - Best balance of speed, quality, and cost
@@ -173,6 +173,6 @@ All code updated, all documentation updated, all scripts updated.
 
 **Migration Date**: October 22, 2025  
 **Migrated From**: OpenAI GPT-4  
-**Migrated To**: Claude Sonnet 4.5 (`claude-sonnet-4-20250514`)  
+**Migrated To**: Claude Sonnet 4.5 (`claude-sonnet-4-5-20250929`)  
 **Status**: ✅ Production Ready
 

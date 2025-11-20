@@ -63,7 +63,7 @@ Add these environment variables in Railway Dashboard:
 
 ```
 ANTHROPIC_API_KEY=sk-ant-api03-your-actual-key-here
-CLAUDE_MODEL=claude-sonnet-4-20250514
+CLAUDE_MODEL=claude-sonnet-4-5-20250929
 CLAUDE_TEMPERATURE=0.7
 PORT=5000
 CORS_ORIGIN=https://rapidlaunchagent.com,https://www.rapidlaunchagent.com
@@ -81,7 +81,7 @@ CLERK_SECRET_KEY=sk_test_your-secret-key-here
 
 ### Local Development (.env)
 - `ANTHROPIC_API_KEY` - Required for AI features
-- `CLAUDE_MODEL` - Optional (defaults to claude-sonnet-4-20250514)
+- `CLAUDE_MODEL` - Optional (defaults to claude-sonnet-4-5-20250929)
 - `CLAUDE_TEMPERATURE` - Optional (defaults to 0.7)
 - `PORT` - Optional (defaults to 5001 locally)
 - `VITE_CLERK_PUBLISHABLE_KEY` - Required for authentication

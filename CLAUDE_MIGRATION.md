@@ -30,7 +30,7 @@ The entire backend has been migrated from OpenAI GPT-4 to **Anthropic Claude Son
 ### Environment Variables
 - ✅ Changed: `OPENAI_API_KEY` → `ANTHROPIC_API_KEY`
 - ✅ Changed: `GPT_MODEL` → `CLAUDE_MODEL`
-- ✅ Using: `claude-sonnet-4-20250514` (Sonnet 4.5)
+- ✅ Using: `claude-sonnet-4-5-20250929` (Sonnet 4.5)
 
 ## New Setup Instructions
 
@@ -114,7 +114,7 @@ If you see an error, check:
 
 ## Model Information
 
-**Model**: `claude-sonnet-4-20250514`
+**Model**: `claude-sonnet-4-5-20250929`
 - Latest Claude Sonnet 4.5
 - 200K context window
 - Best balance of speed, quality, and cost

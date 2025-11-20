@@ -10,6 +10,8 @@ import Manifold from './pages/Manifold';
 import LaunchDocument from './pages/LaunchDocument';
 import ProjectSummary from './pages/ProjectSummary';
 import Dashboard from './pages/Dashboard';
+import PrivacyPolicy from './pages/PrivacyPolicy';
+import TermsOfService from './pages/TermsOfService';
 import Layout from './components/Layout';
 import { useProjectStore } from './store/useProjectStore';
 
@@ -69,6 +71,8 @@ function App() {
       <Routes>
         <Route element={<Layout />}>
           <Route path="/" element={<Landing />} />
+          <Route path="/privacy" element={<PrivacyPolicy />} />
+          <Route path="/terms" element={<TermsOfService />} />
           {/*These routes for if user is sign in but project not selected*/}
           <Route path="/home" element={
             <ProtectedRouteWithoutProject>

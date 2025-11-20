@@ -196,6 +196,42 @@ export default function Layout() {
       <main className={isLandingPage || isHomePage ? "" : "max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8"}>
         <Outlet />
       </main>
+
+      {/* Footer - Show on landing and home pages */}
+      {(isLandingPage || isHomePage) && (
+        <footer className="bg-white border-t border-gray-200 mt-16">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div className="flex flex-col md:flex-row items-center justify-between">
+              <div className="flex items-center space-x-3 mb-4 md:mb-0">
+                <Rocket className="w-6 h-6 text-primary-600" />
+                <span className="text-gray-600 text-sm">
+                  © {new Date().getFullYear()} Rapid Launch Agent. All rights reserved.
+                </span>
+              </div>
+              <div className="flex items-center space-x-6">
+                <button
+                  onClick={() => navigate('/privacy')}
+                  className="text-sm text-gray-600 hover:text-primary-600 transition-colors"
+                >
+                  Privacy Policy
+                </button>
+                <button
+                  onClick={() => navigate('/terms')}
+                  className="text-sm text-gray-600 hover:text-primary-600 transition-colors"
+                >
+                  Terms of Service
+                </button>
+                <a
+                  href="mailto:max@growthgod.io"
+                  className="text-sm text-gray-600 hover:text-primary-600 transition-colors"
+                >
+                  Contact
+                </a>
+              </div>
+            </div>
+          </div>
+        </footer>
+      )}
     </div>
   );
 }

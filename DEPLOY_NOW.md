@@ -50,7 +50,7 @@ In Railway dashboard:
 
 ```bash
 ANTHROPIC_API_KEY=sk-ant-api03-your-anthropic-api-key-here
-CLAUDE_MODEL=claude-sonnet-4-20250514
+CLAUDE_MODEL=claude-sonnet-4-5-20250929
 CLAUDE_TEMPERATURE=0.7
 PORT=5000
 CORS_ORIGIN=*
@@ -156,7 +156,7 @@ If everything works: **🎉 YOU'RE LIVE!**
 ### Railway (Backend)
 ```env
 ANTHROPIC_API_KEY=your-anthropic-api-key-here
-CLAUDE_MODEL=claude-sonnet-4-20250514
+CLAUDE_MODEL=claude-sonnet-4-5-20250929
 CLAUDE_TEMPERATURE=0.7
 PORT=5000
 CORS_ORIGIN=https://rapid-launch-agent.vercel.app

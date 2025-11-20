@@ -27,7 +27,7 @@ Set these in Railway Dashboard → Variables tab:
 ANTHROPIC_API_KEY=sk-ant-api03-your-actual-key-here
 
 # Optional: Model configuration
-CLAUDE_MODEL=claude-sonnet-4-20250514
+CLAUDE_MODEL=claude-sonnet-4-5-20250929
 CLAUDE_TEMPERATURE=0.7
 
 # Port (Railway auto-assigns, but default is 5000)
@@ -60,7 +60,7 @@ Keep using your existing `.env` file:
 ```bash
 # For local development
 ANTHROPIC_API_KEY=sk-ant-api03-your-key
-CLAUDE_MODEL=claude-sonnet-4-20250514
+CLAUDE_MODEL=claude-sonnet-4-5-20250929
 CLAUDE_TEMPERATURE=0.7
 PORT=5000
 ```
