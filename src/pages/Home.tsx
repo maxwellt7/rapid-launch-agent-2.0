@@ -2,6 +2,10 @@ import { useNavigate } from 'react-router-dom';
 import { useProjectStore } from '../store/useProjectStore';
 import { Target, TrendingUp, Zap, Rocket, ArrowRight } from 'lucide-react';
 
+export default function Home() {
+  const navigate = useNavigate();
+  const projects = useProjectStore((state) => state.projects);
+
   const handleGetStarted = () => {
     // Navigate to projects page
     navigate('/projectList');
