@@ -26,6 +26,7 @@ import { analyzeAvatarRoute } from './routes/avatarAnalysis.js';
 import { analyzeCompetitorsRoute } from './routes/competitorAnalysis.js';
 import { runManifoldRoute } from './routes/manifoldWorkflow.js';
 import { generateLaunchDocRoute } from './routes/launchDocument.js';
+import { generateContentRoute, getContentRoute, listContentRoute } from './routes/contentGeneration.js';
 import { queryRoute } from './routes/query.js';
 import { exportRoute } from './routes/export.js';
 import { getGenerationProgressRoute, getLatestGenerationRoute } from './routes/progress.js';
@@ -103,6 +104,9 @@ app.post('/api/analyze/manifold', requireAuth, requireSubscription, apiLimiter, 
 
 // Generation routes (require auth + subscription + rate limiting)
 app.post('/api/generate/launch-document', requireAuth, requireSubscription, apiLimiter, generationLimiter, generateLaunchDocRoute);
+app.post('/api/generate/content', requireAuth, requireSubscription, apiLimiter, generationLimiter, generateContentRoute);
+app.get('/api/content/:contentId', requireAuth, apiLimiter, getContentRoute);
+app.get('/api/content/project/:projectId', requireAuth, apiLimiter, listContentRoute);
 app.get('/api/generation/progress/:generationId', requireAuth, apiLimiter, getGenerationProgressRoute);
 app.get('/api/generation/latest/:projectId', requireAuth, apiLimiter, getLatestGenerationRoute);
 
