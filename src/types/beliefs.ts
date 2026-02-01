@@ -87,15 +87,3 @@ export interface BeliefTransitionStep {
   successMetric: string;
 }
 
-export default {
-  BeliefCategory,
-  BeliefTransitionState,
-  Belief,
-  BeliefGap,
-  TransitionStrategy,
-  BeliefBridgeTactic,
-  BeliefBridgePattern,
-  BeliefMap,
-  BeliefTransitionPlan,
-  BeliefTransitionStep,
-};

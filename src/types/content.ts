@@ -224,24 +224,3 @@ export interface ContentMetadata {
   userNotes?: string;
 }
 
-export default {
-  AdScript,
-  AdCopy,
-  LandingPageCopy,
-  LandingPageSection,
-  VSLScript,
-  VSLAct,
-  EmailSequence,
-  Email,
-  AdImageSpecs,
-  AdImageSpec,
-  BookingPageCopy,
-  ThankYouPageCopy,
-  BLURReport,
-  BLURCoverPage,
-  BLURPage,
-  ChartSpec,
-  ImageSpec,
-  BLUREmailCopy,
-  ContentMetadata,
-};

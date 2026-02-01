@@ -19,7 +19,6 @@ export default function OfferBuilder() {
       proofElements: '',
       pricing: '',
       guarantee: '',
-      analysis: null,
     }
   );
 
@@ -54,8 +53,8 @@ export default function OfferBuilder() {
     updateOffer(formData);
     
     // If we have suggested avatar data from the analysis, pre-populate avatar
-    if (formData.analysis?.suggestedAvatar) {
-      const suggested = formData.analysis.suggestedAvatar;
+    if (formData.analysisJson?.suggestedAvatar) {
+      const suggested = formData.analysisJson.suggestedAvatar;
       updateAvatar({
         demographics: suggested.demographics,
         webAnalysis: {
@@ -202,34 +201,136 @@ export default function OfferBuilder() {
         </div>
 
         {/* Analysis Results */}
-        {formData.analysis && (
+        {formData.analysisJson?.eyoScores && (
           <div className="card bg-green-50 border-green-200">
-            <h3 className="text-lg font-semibold text-green-900 mb-4">Analysis Complete ✓</h3>
-            <div className="grid md:grid-cols-2 gap-4 mb-4">
-              <div>
-                <h4 className="font-medium text-gray-700 mb-2">Essential Components</h4>
-                <div className="space-y-1 text-sm">
-                  <p>Massive Pain: {formData.analysis.essentialComponents.massivePain}/10</p>
-                  <p>Purchasing Power: {formData.analysis.essentialComponents.purchasingPower}/10</p>
-                  <p>Easy to Target: {formData.analysis.essentialComponents.easyToTarget}/10</p>
-                  <p>Growing Market: {formData.analysis.essentialComponents.growingMarket}/10</p>
-                  <p className="font-semibold">Average: {formData.analysis.essentialComponents.average.toFixed(2)}/10</p>
-                </div>
+            <h3 className="text-lg font-semibold text-green-900 mb-4">Easy Yes Offer Analysis Complete ✓</h3>
+
+            {/* EYO Score Summary */}
+            <div className="mb-6 p-4 bg-white rounded-lg border border-green-300">
+              <div className="flex items-center justify-between mb-2">
+                <h4 className="font-semibold text-gray-900">Overall EYO Score</h4>
+                <span className="text-3xl font-bold text-green-600">
+                  {formData.analysisJson.eyoScores.totalScore}/50
+                </span>
               </div>
-              <div>
-                <h4 className="font-medium text-gray-700 mb-2">Irresistible Equation</h4>
-                <div className="space-y-1 text-sm">
-                  <p>Promise Size: {formData.analysis.irresistibleEquation.promiseSize}/10</p>
-                  <p>Perceived Likelihood: {formData.analysis.irresistibleEquation.perceivedLikelihood}/10</p>
-                  <p>Time Delay: {formData.analysis.irresistibleEquation.timeDelay}/10 (inverse)</p>
-                  <p>Effort Required: {formData.analysis.irresistibleEquation.effortRequired}/10 (inverse)</p>
-                  <p className="font-semibold">Score: {formData.analysis.irresistibleEquation.score.toFixed(2)}</p>
-                </div>
+              <div className="w-full bg-gray-200 rounded-full h-3">
+                <div
+                  className="bg-green-600 h-3 rounded-full transition-all"
+                  style={{ width: `${(formData.analysisJson.eyoScores.totalScore / 50) * 100}%` }}
+                />
               </div>
+              <p className="text-sm text-gray-600 mt-2">
+                {formData.analysisJson.eyoScores.totalScore >= 40 && "Excellent! This is a strong Easy Yes Offer."}
+                {formData.analysisJson.eyoScores.totalScore >= 30 && formData.analysisJson.eyoScores.totalScore < 40 && "Good foundation. A few improvements will make this exceptional."}
+                {formData.analysisJson.eyoScores.totalScore >= 20 && formData.analysisJson.eyoScores.totalScore < 30 && "Moderate score. Focus on the criteria below to strengthen your offer."}
+                {formData.analysisJson.eyoScores.totalScore < 20 && "Needs work. Review each criterion carefully."}
+              </p>
             </div>
-            <p className="text-sm text-gray-700">
-              Generated {formData.analysis.recommendations.length} strategic recommendations
-            </p>
+
+            {/* Individual EYO Criteria */}
+            <div className="space-y-4">
+              {[
+                { key: 'clarityOfOutcome', label: 'Clarity of Outcome', description: 'How clear is the outcome?' },
+                { key: 'gravityOfProblem', label: 'Gravity of Problem', description: 'How serious is the problem?' },
+                { key: 'beliefInDiagnosis', label: 'Belief in Diagnosis', description: 'Do they believe your diagnosis?' },
+                { key: 'naturalFit', label: 'Natural Fit', description: 'Is this a natural fit?' },
+                { key: 'clearOffer', label: 'Clear Offer', description: 'Is the offer clear and simple?' },
+              ].map(({ key, label, description }) => {
+                const score = formData.analysisJson?.eyoScores[key as keyof typeof formData.analysisJson.eyoScores];
+                if (typeof score === 'object' && score !== null && 'score' in score) {
+                  return (
+                    <div key={key} className="bg-white p-4 rounded-lg border border-gray-200">
+                      <div className="flex items-center justify-between mb-2">
+                        <div>
+                          <h5 className="font-medium text-gray-900">{label}</h5>
+                          <p className="text-sm text-gray-500">{description}</p>
+                        </div>
+                        <span className={`text-2xl font-bold ${
+                          score.score >= 8 ? 'text-green-600' :
+                          score.score >= 6 ? 'text-yellow-600' :
+                          'text-red-600'
+                        }`}>
+                          {score.score}/10
+                        </span>
+                      </div>
+                      <p className="text-sm text-gray-700 mb-2">{score.reasoning}</p>
+
+                      {score.strengths && score.strengths.length > 0 && (
+                        <div className="mt-2">
+                          <p className="text-xs font-medium text-green-700 mb-1">✓ Strengths:</p>
+                          <ul className="text-xs text-gray-600 space-y-1 ml-4">
+                            {score.strengths.map((strength: string, idx: number) => (
+                              <li key={idx}>{strength}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+
+                      {score.weaknesses && score.weaknesses.length > 0 && (
+                        <div className="mt-2 pt-2 border-t border-gray-200">
+                          <p className="text-xs font-medium text-red-700 mb-1">Areas to Improve:</p>
+                          <ul className="text-xs text-gray-600 space-y-1 ml-4">
+                            {score.weaknesses.map((weakness: string, idx: number) => (
+                              <li key={idx}>{weakness}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+                    </div>
+                  );
+                }
+                return null;
+              })}
+            </div>
+
+            {/* Recommendations */}
+            {formData.analysisJson?.recommendations && formData.analysisJson.recommendations.length > 0 && (
+              <div className="mt-6 p-4 bg-white rounded-lg border border-gray-200">
+                <h4 className="font-medium text-gray-900 mb-3">Strategic Recommendations</h4>
+                <div className="space-y-4">
+                  {formData.analysisJson.recommendations.map((rec, idx) => (
+                    <div key={idx} className="border-l-4 border-green-500 pl-4">
+                      <div className="flex items-start justify-between mb-2">
+                        <div className="flex-1">
+                          <h5 className="font-medium text-gray-900">
+                            {idx + 1}. {rec.title}
+                          </h5>
+                          <p className="text-sm text-gray-600 mt-1">{rec.description}</p>
+                        </div>
+                        <span className={`ml-4 px-2 py-1 rounded text-xs font-medium ${
+                          rec.implementation.priority === 'high' ? 'bg-red-100 text-red-700' :
+                          rec.implementation.priority === 'medium' ? 'bg-yellow-100 text-yellow-700' :
+                          'bg-blue-100 text-blue-700'
+                        }`}>
+                          {rec.implementation.priority} priority
+                        </span>
+                      </div>
+                      <div className="grid md:grid-cols-3 gap-2 text-xs text-gray-600 mb-2">
+                        <div>
+                          <span className="font-medium">Impact:</span> +{rec.scoreImpact.change} points
+                        </div>
+                        <div>
+                          <span className="font-medium">Difficulty:</span> {rec.implementation.difficulty}
+                        </div>
+                        <div>
+                          <span className="font-medium">Time:</span> {rec.implementation.timeRequired}
+                        </div>
+                      </div>
+                      {rec.specificActions && rec.specificActions.length > 0 && (
+                        <div className="mt-2">
+                          <p className="text-xs font-medium text-gray-600 mb-1">Actions:</p>
+                          <ul className="text-xs text-gray-600 space-y-1 ml-4">
+                            {rec.specificActions.map((action: string, actionIdx: number) => (
+                              <li key={actionIdx} className="list-disc">{action}</li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         )}
 

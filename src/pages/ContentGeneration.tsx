@@ -16,6 +16,18 @@ import {
   Sparkles,
 } from 'lucide-react';
 
+// Field type definitions
+type FormField = {
+  id: string;
+  label: string;
+  required: boolean;
+} & (
+  | { type: 'text'; placeholder: string }
+  | { type: 'number'; placeholder: string }
+  | { type: 'textarea'; placeholder: string }
+  | { type: 'select'; options: string[] }
+);
+
 export default function ContentGeneration() {
   const { contentType } = useParams<{ contentType: string }>();
   const navigate = useNavigate();
@@ -27,7 +39,14 @@ export default function ContentGeneration() {
   const [formData, setFormData] = useState<Record<string, string>>({});
 
   // Content type configurations
-  const contentConfigs = {
+  const contentConfigs: Record<string, {
+    name: string;
+    icon: any;
+    color: string;
+    bgColor: string;
+    description: string;
+    fields: FormField[];
+  }> = {
     blur: {
       name: 'BLUR Campaign',
       icon: Mail,
@@ -218,7 +237,7 @@ export default function ContentGeneration() {
                     type="text"
                     value={formData[field.id] || ''}
                     onChange={(e) => handleInputChange(field.id, e.target.value)}
-                    placeholder={field.placeholder}
+                    placeholder={'placeholder' in field ? field.placeholder : ''}
                     className="input w-full"
                     required={field.required}
                   />
@@ -229,7 +248,7 @@ export default function ContentGeneration() {
                     type="number"
                     value={formData[field.id] || ''}
                     onChange={(e) => handleInputChange(field.id, e.target.value)}
-                    placeholder={field.placeholder}
+                    placeholder={'placeholder' in field ? field.placeholder : ''}
                     className="input w-full"
                     required={field.required}
                   />
@@ -239,7 +258,7 @@ export default function ContentGeneration() {
                   <textarea
                     value={formData[field.id] || ''}
                     onChange={(e) => handleInputChange(field.id, e.target.value)}
-                    placeholder={field.placeholder}
+                    placeholder={'placeholder' in field ? field.placeholder : ''}
                     rows={4}
                     className="input w-full"
                     required={field.required}
@@ -254,7 +273,7 @@ export default function ContentGeneration() {
                     required={field.required}
                   >
                     <option value="">Select...</option>
-                    {field.options?.map((option) => (
+                    {'options' in field && field.options.map((option: string) => (
                       <option key={option} value={option}>
                         {option}
                       </option>

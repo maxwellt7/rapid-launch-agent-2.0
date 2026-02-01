@@ -56,6 +56,7 @@ export interface EYOAnalysis {
     naturalFit: EYOScore;
     clearOffer: EYOScore;
     total: number;
+    totalScore: number; // Alias for total
   };
 
   // Recommendations for improvement
@@ -108,6 +109,9 @@ export interface EYORecommendation {
   specificActions: string[];
 }
 
+// Backward compatibility export
+export type OfferAnalysis = EYOAnalysis;
+
 // Avatar Builder Types (with 6 Beliefs Framework)
 export interface AvatarData {
   demographics: Demographics;
@@ -119,6 +123,16 @@ export interface AvatarData {
 
   // 6 Beliefs Framework (NEW for EYO)
   beliefs?: BeliefAnalysis;
+
+  // Analysis JSON from swarm
+  analysisJson?: {
+    webAnalysis?: any;
+    sixBeliefs?: BeliefAnalysis;
+    psychographics?: any;
+    buyingTriggers?: any;
+    messaging?: any;
+    summary?: any;
+  };
 }
 
 export interface Demographics {
@@ -128,6 +142,10 @@ export interface Demographics {
   incomeRange: string;
   education: string;
   occupation: string;
+
+  // Backward compatibility
+  age?: string;
+  income?: string;
 }
 
 export interface WEBAnalysis {
@@ -148,12 +166,19 @@ export interface BeliefAnalysis {
 }
 
 export interface BeliefState {
-  status: 'closed' | 'receptive' | 'transformed';
-  currentBelief: string;
-  targetBelief: string;
-  beliefGap: string;
-  bridgeStrategy: string;
-  copyRecommendations: string[];
+  status?: 'closed' | 'receptive' | 'transformed';
+  currentBelief?: string;
+  targetBelief?: string;
+  beliefGap?: string;
+  bridgeStrategy?: string;
+  copyRecommendations?: string[];
+
+  // From swarm analysis
+  currentState?: number; // 0-10 score
+  requiredBelief?: string;
+  commonObjections?: string[];
+  transitionState?: 'closed' | 'receptive' | 'transformed';
+  messagingHooks?: string[];
 }
 
 export interface EmpathyMap {

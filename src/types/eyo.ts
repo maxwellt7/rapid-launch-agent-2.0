@@ -65,13 +65,3 @@ export interface EYOGuarantee {
   riskReversal: string;
 }
 
-export default {
-  EYOCriteria,
-  EYOScoreBreakdown,
-  EYOImprovementPlan,
-  EYOActionItem,
-  EYOPricing,
-  ValueStackItem,
-  PaymentOption,
-  EYOGuarantee,
-};

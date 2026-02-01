@@ -13,10 +13,10 @@ export default function AvatarBuilder() {
   
   const [demographics, setDemographics] = useState<Demographics>(
     currentProject?.avatar?.demographics || {
-      age: '',
+      ageRange: '',
       gender: '',
       location: '',
-      income: '',
+      incomeRange: '',
       education: '',
       occupation: '',
     }
@@ -170,7 +170,7 @@ export default function AvatarBuilder() {
                 <label className="label">Age Range</label>
                 <input
                   type="text"
-                  value={demographics.age}
+                  value={demographics.ageRange}
                   onChange={(e) => setDemographics({ ...demographics, age: e.target.value })}
                   placeholder="e.g., 35-50"
                   className="input"
@@ -200,7 +200,7 @@ export default function AvatarBuilder() {
                 <label className="label">Income Range</label>
                 <input
                   type="text"
-                  value={demographics.income}
+                  value={demographics.incomeRange}
                   onChange={(e) => setDemographics({ ...demographics, income: e.target.value })}
                   placeholder="e.g., $75K-$150K/year"
                   className="input"
@@ -418,6 +418,133 @@ export default function AvatarBuilder() {
           )}
         </div>
       </div>
+
+      {/* 6 Beliefs Analysis Results */}
+      {currentProject?.avatar?.beliefs && (
+        <div className="card bg-blue-50 border-blue-200 mb-6">
+          <h3 className="text-lg font-semibold text-blue-900 mb-4">6 Beliefs Analysis ✓</h3>
+          <p className="text-sm text-gray-600 mb-4">
+            Understanding your avatar's beliefs is critical for messaging that resonates.
+          </p>
+
+          <div className="space-y-4">
+            {[
+              { key: 'outcome', label: 'Outcome Belief', icon: '🎯', description: 'Can they achieve the desired outcome?' },
+              { key: 'identity', label: 'Identity Belief', icon: '👤', description: 'Can someone like them achieve it?' },
+              { key: 'problem', label: 'Problem Belief', icon: '⚠️', description: 'Do they understand the real problem?' },
+              { key: 'solution', label: 'Solution Belief', icon: '💡', description: 'Do they believe in the solution approach?' },
+              { key: 'product', label: 'Product Belief', icon: '📦', description: 'Do they believe in your specific product?' },
+              { key: 'credibility', label: 'Credibility Belief', icon: '⭐', description: 'Do they trust you and your brand?' },
+            ].map(({ key, label, icon, description }) => {
+              const belief = currentProject?.avatar?.beliefs?.[key as keyof typeof currentProject.avatar.beliefs];
+              if (!belief) return null;
+
+              const statusColor =
+                belief.transitionState === 'transformed' || belief.status === 'transformed' ? 'green' :
+                belief.transitionState === 'receptive' || belief.status === 'receptive' ? 'yellow' :
+                'red';
+
+              const statusBg =
+                statusColor === 'green' ? 'bg-green-100 text-green-800' :
+                statusColor === 'yellow' ? 'bg-yellow-100 text-yellow-800' :
+                'bg-red-100 text-red-800';
+
+              return (
+                <div key={key} className="bg-white p-4 rounded-lg border border-gray-200">
+                  <div className="flex items-start justify-between mb-3">
+                    <div className="flex items-center space-x-2">
+                      <span className="text-2xl">{icon}</span>
+                      <div>
+                        <h5 className="font-medium text-gray-900">{label}</h5>
+                        <p className="text-xs text-gray-500">{description}</p>
+                      </div>
+                    </div>
+                    <span className={`px-3 py-1 rounded-full text-xs font-medium ${statusBg}`}>
+                      {belief.transitionState || belief.status || 'closed'}
+                    </span>
+                  </div>
+
+                  {belief.currentState !== undefined && (
+                    <div className="mb-3">
+                      <div className="flex items-center justify-between text-xs text-gray-600 mb-1">
+                        <span>Current Belief Strength</span>
+                        <span className="font-medium">{belief.currentState}/10</span>
+                      </div>
+                      <div className="w-full bg-gray-200 rounded-full h-2">
+                        <div
+                          className={`h-2 rounded-full transition-all ${
+                            belief.currentState >= 7 ? 'bg-green-500' :
+                            belief.currentState >= 4 ? 'bg-yellow-500' :
+                            'bg-red-500'
+                          }`}
+                          style={{ width: `${belief.currentState * 10}%` }}
+                        />
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="grid md:grid-cols-2 gap-3 text-sm">
+                    {belief.currentBelief && (
+                      <div>
+                        <p className="text-xs font-medium text-gray-500 mb-1">Current Belief</p>
+                        <p className="text-gray-700">{belief.currentBelief}</p>
+                      </div>
+                    )}
+                    {(belief.targetBelief || belief.requiredBelief) && (
+                      <div>
+                        <p className="text-xs font-medium text-gray-500 mb-1">Required Belief</p>
+                        <p className="text-gray-700">{belief.targetBelief || belief.requiredBelief}</p>
+                      </div>
+                    )}
+                  </div>
+
+                  {belief.beliefGap && (
+                    <div className="mt-3 p-2 bg-yellow-50 rounded border border-yellow-200">
+                      <p className="text-xs font-medium text-yellow-800 mb-1">Belief Gap</p>
+                      <p className="text-xs text-yellow-700">{belief.beliefGap}</p>
+                    </div>
+                  )}
+
+                  {belief.bridgeStrategy && (
+                    <div className="mt-3 p-2 bg-blue-50 rounded border border-blue-200">
+                      <p className="text-xs font-medium text-blue-800 mb-1">Bridge Strategy</p>
+                      <p className="text-xs text-blue-700">{belief.bridgeStrategy}</p>
+                    </div>
+                  )}
+
+                  {belief.commonObjections && belief.commonObjections.length > 0 && (
+                    <div className="mt-3">
+                      <p className="text-xs font-medium text-gray-600 mb-1">Common Objections</p>
+                      <ul className="text-xs text-gray-600 space-y-1">
+                        {belief.commonObjections.map((objection, idx) => (
+                          <li key={idx} className="flex items-start">
+                            <span className="text-red-500 mr-1">•</span>
+                            <span>{objection}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+
+                  {(belief.copyRecommendations || belief.messagingHooks) && (
+                    <div className="mt-3">
+                      <p className="text-xs font-medium text-gray-600 mb-1">Messaging Hooks</p>
+                      <ul className="text-xs text-gray-600 space-y-1">
+                        {(belief.copyRecommendations || belief.messagingHooks)?.map((hook, idx) => (
+                          <li key={idx} className="flex items-start">
+                            <span className="text-green-500 mr-1">✓</span>
+                            <span>{hook}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
 
       {/* Primary Currency & Million Dollar Message */}
       <div className="space-y-6">

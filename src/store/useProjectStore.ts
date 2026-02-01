@@ -27,6 +27,7 @@ export const useProjectStore = create<ProjectStore>()(
       createProject: (name: string) => {
         const newProject: Project = {
           id: `proj_${Date.now()}`,
+          userId: 'local', // Will be set by auth
           name,
           createdAt: new Date().toISOString(),
           updatedAt: new Date().toISOString(),
@@ -36,6 +37,9 @@ export const useProjectStore = create<ProjectStore>()(
           competitors: null,
           manifold: null,
           launchDoc: null,
+          blurReport: null,
+          contentGenerations: [],
+          lovableDeployments: [],
         };
 
         set((state) => ({

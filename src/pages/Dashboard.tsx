@@ -1,18 +1,13 @@
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useProjectStore } from '../store/useProjectStore';
 import {
   LayoutDashboard,
   Target,
   Users,
-  TrendingUp,
-  Brain,
   FileText,
   Video,
   Mail,
-  Megaphone,
   Send,
-  Loader2,
   BarChart3,
   Zap
 } from 'lucide-react';
@@ -20,7 +15,6 @@ import {
 export default function Dashboard() {
   const navigate = useNavigate();
   const currentProject = useProjectStore((state) => state.currentProject);
-  const [selectedContentType, setSelectedContentType] = useState<string | null>(null);
 
   // Extract EYO scores if available
   const eyoScores = currentProject?.offer?.analysisJson?.eyoScores;
@@ -71,7 +65,6 @@ export default function Dashboard() {
   ];
 
   const handleGenerateContent = (contentTypeId: string) => {
-    setSelectedContentType(contentTypeId);
     // Navigate to content generation page
     navigate(`/project/content/${contentTypeId}`);
   };
