@@ -10,6 +10,8 @@
     "server": "node server/index.js",
     "start": "node server/index.js",
     "type-check": "tsc --noEmit",
+    "test:api": "node test-api.js",
+    "test": "npm run type-check && npm run build",
     "docker:build": "docker build -t rapid-launch-agent .",
     "docker:run": "docker run -p 5000:5000 --env-file .env rapid-launch-agent",
     "validate": "node -c server/index.js && npm run type-check"
