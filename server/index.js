@@ -21,6 +21,7 @@ import { errorHandler, notFoundHandler } from './middleware/errorHandler.js';
 
 // Routes
 import { analyzeOfferRoute } from './routes/offerAnalysis.js';
+import { applyImprovementsRoute } from './routes/offerImprovement.js';
 import { analyzeAvatarRoute } from './routes/avatarAnalysis.js';
 import { analyzeCompetitorsRoute } from './routes/competitorAnalysis.js';
 import { runManifoldRoute } from './routes/manifoldWorkflow.js';
@@ -95,6 +96,7 @@ if (process.env.NODE_ENV === 'development') {
 
 // Analysis routes (require auth + subscription + rate limiting)
 app.post('/api/analyze/offer', requireAuth, requireSubscription, apiLimiter, generationLimiter, analyzeOfferRoute);
+app.post('/api/offer/apply-improvements', requireAuth, requireSubscription, apiLimiter, generationLimiter, applyImprovementsRoute);
 app.post('/api/analyze/avatar', requireAuth, requireSubscription, apiLimiter, generationLimiter, analyzeAvatarRoute);
 app.post('/api/analyze/competitors', requireAuth, requireSubscription, apiLimiter, generationLimiter, analyzeCompetitorsRoute);
 app.post('/api/analyze/manifold', requireAuth, requireSubscription, apiLimiter, generationLimiter, runManifoldRoute);
