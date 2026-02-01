@@ -1,0 +1,104 @@
+========================================
+GOOGLE OAUTH VERIFICATION SUBMISSION
+Copy and paste this into Google's forms
+========================================
+
+APPLICATION NAME: Rapid Launch Agent
+WEBSITE: https://rapidlaunchagent.com
+CONTACT EMAIL: max@growthgod.io
+
+========================================
+JUSTIFICATION FOR SCOPE USAGE
+========================================
+
+APPLICATION PURPOSE:
+Rapid Launch Agent is an AI-powered marketing automation platform that helps entrepreneurs and marketers create comprehensive launch strategies. We use Google OAuth exclusively for secure user authentication and account management through our authentication provider, Clerk.
+
+---
+
+REQUESTED SCOPES AND JUSTIFICATIONS:
+
+1. openid
+HOW IT WILL BE USED:
+Required for OAuth 2.0 authentication protocol. This scope enables secure user authentication through Google Sign-In, allowing users to log into Rapid Launch Agent without creating a separate password. This is the foundation of our Single Sign-On (SSO) implementation.
+
+2. https://www.googleapis.com/auth/userinfo.email
+HOW IT WILL BE USED:
+Used to retrieve the user's primary Google account email address for the following purposes:
+- Create and uniquely identify user accounts in our system
+- Send project notifications, AI generation updates, and system alerts
+- Provide customer support and respond to user inquiries
+- Enable account recovery processes
+- Facilitate team collaboration features
+The email address is stored securely in our database and is never shared with third parties for advertising purposes as stated in our Privacy Policy.
+
+3. https://www.googleapis.com/auth/userinfo.profile
+HOW IT WILL BE USED:
+Used to retrieve the user's basic profile information including their full name and profile picture URL. This information is used to:
+- Personalize the user interface by displaying the user's name in the application header
+- Show the user's profile picture for easy account identification
+- Populate user settings and account management sections
+- Display collaborator information when multiple users work on shared projects
+This creates a more intuitive and personalized user experience while maintaining account security.
+
+---
+
+DATA HANDLING AND PRIVACY:
+
+• Authentication Management: We use Clerk (clerk.com), a certified authentication provider, to handle all OAuth flows and token management securely.
+
+• Data Storage: All user data is encrypted at rest using industry-standard encryption. User credentials and tokens are managed by Clerk and never stored in plain text.
+
+• Data Minimization: We only collect and store the minimum data necessary for authentication and account management. We do not request access to users' Google Drive, Gmail, Calendar, or any other Google services.
+
+• No Third-Party Sharing: User data is never sold or shared with advertisers or data brokers. We only share data with service providers necessary for operating the service (authentication, hosting, AI processing) under strict confidentiality agreements.
+
+• User Rights: Users can request data deletion at any time through their account settings. Upon account deletion, all personal data is permanently removed from our systems within 30 days.
+
+• Transparency: Our complete data handling practices are detailed in our Privacy Policy at https://rapidlaunchagent.com/privacy and Terms of Service at https://rapidlaunchagent.com/terms
+
+---
+
+SECURITY MEASURES:
+
+• All data transmission occurs over HTTPS/TLS encryption
+• Regular security audits and vulnerability assessments
+• Compliance with GDPR, CCPA, and other privacy regulations
+• Secure session management through Clerk's infrastructure
+• OAuth tokens are stored securely and refreshed as needed
+• No passwords are ever stored on our servers
+
+---
+
+USER CONSENT AND CONTROL:
+
+Users are presented with Google's OAuth consent screen clearly showing:
+1. What permissions are being requested (email, profile, authentication)
+2. Why each permission is needed (as explained above)
+3. The option to deny access if they choose
+
+Users maintain full control over their connected Google account and can revoke access at any time through their Google Account settings.
+
+---
+
+VIDEO DEMONSTRATION:
+[Upload your YouTube video URL here once created]
+
+The video demonstrates:
+• The complete Google Sign-In flow from the user's perspective
+• What permissions are requested and displayed to users
+• How the data is used within the application
+• Privacy and security measures in place
+• How users can manage or revoke access
+
+========================================
+
+ADDITIONAL INFORMATION:
+
+Privacy Policy: https://rapidlaunchagent.com/privacy
+Terms of Service: https://rapidlaunchagent.com/terms
+Contact: max@growthgod.io
+Last Updated: November 20, 2025
+
+========================================
+
