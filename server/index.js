@@ -12,6 +12,14 @@ dotenv.config({ path: join(__dirname, '..', '.env') });
 // Now import everything else after env is loaded
 import express from 'express';
 import cors from 'cors';
+
+// Middleware
+import { requireAuth } from './middleware/auth.js';
+import { requireSubscription, bypassSubscription } from './middleware/subscription.js';
+import { apiLimiter, generationLimiter, webhookLimiter } from './middleware/rateLimit.js';
+import { errorHandler, notFoundHandler } from './middleware/errorHandler.js';
+
+// Routes
 import { analyzeOfferRoute } from './routes/offerAnalysis.js';
 import { analyzeAvatarRoute } from './routes/avatarAnalysis.js';
 import { analyzeCompetitorsRoute } from './routes/competitorAnalysis.js';
@@ -20,6 +28,7 @@ import { generateLaunchDocRoute } from './routes/launchDocument.js';
 import { queryRoute } from './routes/query.js';
 import { exportRoute } from './routes/export.js';
 import { getGenerationProgressRoute, getLatestGenerationRoute } from './routes/progress.js';
+import { clerkWebhookHandler, getSubscriptionStatus, verifyToken } from './routes/auth.js';
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -56,38 +65,59 @@ app.use(cors(corsOptions));
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
+// Public routes (no authentication required)
+// ============================================
+
 // Health check
 app.get('/api/health', (req, res) => {
-  res.json({ status: 'ok', message: 'Rapid Launch Agent API is running' });
-});
-
-// Routes
-app.post('/api/analyze/offer', analyzeOfferRoute);
-app.post('/api/analyze/avatar', analyzeAvatarRoute);
-app.post('/api/analyze/competitors', analyzeCompetitorsRoute);
-app.post('/api/analyze/manifold', runManifoldRoute);
-app.post('/api/generate/launch-document', generateLaunchDocRoute);
-app.get('/api/generation/progress/:generationId', getGenerationProgressRoute);
-app.get('/api/generation/latest/:projectId', getLatestGenerationRoute);
-app.post('/api/query', queryRoute);
-app.post('/api/export/:format', exportRoute);
-
-// Error handling middleware
-app.use((err, req, res, next) => {
-  console.error('Error:', err);
-  res.status(err.status || 500).json({
-    success: false,
-    error: err.message || 'Internal server error',
+  res.json({
+    status: 'ok',
+    message: 'Rapid Launch Agent 2.0 (Easy Yes System) API is running',
+    version: '2.0.0',
+    timestamp: new Date().toISOString(),
   });
 });
 
-// 404 handler
-app.use((req, res) => {
-  res.status(404).json({
-    success: false,
-    error: 'Route not found',
-  });
-});
+// Clerk webhook (rate limited but no auth)
+app.post('/api/webhooks/clerk', webhookLimiter, clerkWebhookHandler);
+
+// Protected routes (authentication required)
+// ============================================
+
+// Auth verification routes
+app.get('/api/auth/verify', requireAuth, verifyToken);
+app.get('/api/auth/subscription', requireAuth, getSubscriptionStatus);
+
+// Development bypass (only in dev mode with env var)
+if (process.env.NODE_ENV === 'development') {
+  app.use('/api', bypassSubscription);
+}
+
+// Analysis routes (require auth + subscription + rate limiting)
+app.post('/api/analyze/offer', requireAuth, requireSubscription, apiLimiter, generationLimiter, analyzeOfferRoute);
+app.post('/api/analyze/avatar', requireAuth, requireSubscription, apiLimiter, generationLimiter, analyzeAvatarRoute);
+app.post('/api/analyze/competitors', requireAuth, requireSubscription, apiLimiter, generationLimiter, analyzeCompetitorsRoute);
+app.post('/api/analyze/manifold', requireAuth, requireSubscription, apiLimiter, generationLimiter, runManifoldRoute);
+
+// Generation routes (require auth + subscription + rate limiting)
+app.post('/api/generate/launch-document', requireAuth, requireSubscription, apiLimiter, generationLimiter, generateLaunchDocRoute);
+app.get('/api/generation/progress/:generationId', requireAuth, apiLimiter, getGenerationProgressRoute);
+app.get('/api/generation/latest/:projectId', requireAuth, apiLimiter, getLatestGenerationRoute);
+
+// Query route (require auth + subscription)
+app.post('/api/query', requireAuth, requireSubscription, apiLimiter, queryRoute);
+
+// Export routes (require auth + subscription)
+app.post('/api/export/:format', requireAuth, requireSubscription, apiLimiter, exportRoute);
+
+// Error handling
+// ============================================
+
+// 404 handler (must be before error handler)
+app.use(notFoundHandler);
+
+// Global error handler (must be last)
+app.use(errorHandler);
 
 app.listen(PORT, () => {
   console.log(`🚀 Rapid Launch Agent server running on port ${PORT}`);
