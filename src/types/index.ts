@@ -1,18 +1,31 @@
 // Core Project Types
 export interface Project {
   id: string;
+  userId: string;
   name: string;
   createdAt: string;
   updatedAt: string;
   currentStep: number;
+
+  // Branding (NEW for EYO)
+  companyName?: string;
+  logoUrl?: string;
+  brandColorPrimary?: string;
+  brandColorSecondary?: string;
+  brandVoice?: 'professional' | 'casual' | 'authoritative';
+
+  // Related data
   offer: OfferData | null;
   avatar: AvatarData | null;
   competitors: CompetitorData | null;
   manifold: ManifoldData | null;
   launchDoc: LaunchDocData | null;
+  blurReport: BlurReportData | null;
+  contentGenerations: ContentGeneration[];
+  lovableDeployments: LovableDeployment[];
 }
 
-// Offer Builder Types
+// Offer Builder Types (EYO Scoring)
 export interface OfferData {
   targetMarket: string;
   pressingProblem: string;
@@ -22,33 +35,41 @@ export interface OfferData {
   proofElements: string;
   pricing: string;
   guarantee: string;
-  analysis: OfferAnalysis | null;
+
+  // EYO Scoring (NEW - replaces Hormozi)
+  clarityOfOutcome?: number;        // 1-10
+  gravityOfProblem?: number;        // 1-10
+  beliefInDiagnosis?: number;       // 1-10
+  naturalFit?: number;              // 1-10
+  clearOffer?: number;              // 1-10
+  totalScore?: number;              // out of 50
+
+  analysisJson?: EYOAnalysis;
 }
 
-export interface OfferAnalysis {
-  essentialComponents: {
-    massivePain: number;
-    purchasingPower: number;
-    easyToTarget: number;
-    growingMarket: number;
-    average: number;
+export interface EYOAnalysis {
+  // EYO Scoring breakdown
+  eyoScores: {
+    clarityOfOutcome: EYOScore;
+    gravityOfProblem: EYOScore;
+    beliefInDiagnosis: EYOScore;
+    naturalFit: EYOScore;
+    clearOffer: EYOScore;
+    total: number;
   };
-  irresistibleEquation: {
-    promiseSize: number;
-    perceivedLikelihood: number;
-    timeDelay: number;
-    effortRequired: number;
-    score: number;
-  };
-  recommendations: OfferRecommendation[];
-  projectedImprovement: {
-    beforeScore: number;
-    afterScore: number;
+
+  // Recommendations for improvement
+  recommendations: EYORecommendation[];
+
+  // Projected improvement after applying recommendations
+  projectedImprovement?: {
+    currentScore: number;
+    projectedScore: number;
     improvement: number;
     improvementPercent: number;
-    totalBudget: string;
-    timeline: string;
   };
+
+  // Suggested avatar (for pre-population)
   suggestedAvatar?: {
     demographics: Demographics;
     primaryWants: string[];
@@ -57,27 +78,37 @@ export interface OfferAnalysis {
     dominantEmotion: string;
     primaryCurrency: string;
     millionDollarMessage: string;
+    beliefs?: BeliefAnalysis;
   };
 }
 
-export interface OfferRecommendation {
+export interface EYOScore {
+  score: number;              // 1-10
+  reasoning: string;
+  strengths: string[];
+  weaknesses: string[];
+}
+
+export interface EYORecommendation {
   id: number;
   title: string;
   description: string;
   reasoning: string;
-  componentImproved: string;
+  criteriaImproved: 'clarityOfOutcome' | 'gravityOfProblem' | 'beliefInDiagnosis' | 'naturalFit' | 'clearOffer';
   scoreImpact: {
     before: number;
     after: number;
     change: number;
   };
   implementation: {
+    difficulty: 'easy' | 'medium' | 'hard';
     timeRequired: string;
-    budgetRequired: string;
+    priority: 'high' | 'medium' | 'low';
   };
+  specificActions: string[];
 }
 
-// Avatar Builder Types
+// Avatar Builder Types (with 6 Beliefs Framework)
 export interface AvatarData {
   demographics: Demographics;
   webAnalysis: WEBAnalysis;
@@ -85,13 +116,16 @@ export interface AvatarData {
   goalsGrid: GoalsGrid;
   primaryCurrency: string;
   millionDollarMessage: string;
+
+  // 6 Beliefs Framework (NEW for EYO)
+  beliefs?: BeliefAnalysis;
 }
 
 export interface Demographics {
-  age: string;
+  ageRange: string;
   gender: string;
   location: string;
-  income: string;
+  incomeRange: string;
   education: string;
   occupation: string;
 }
@@ -101,6 +135,25 @@ export interface WEBAnalysis {
   emotions: string[];
   beliefs: string[];
   dominantEmotion: string;
+}
+
+// 6 Beliefs Framework (NEW)
+export interface BeliefAnalysis {
+  outcome: BeliefState;
+  identity: BeliefState;
+  problem: BeliefState;
+  solution: BeliefState;
+  product: BeliefState;
+  credibility: BeliefState;
+}
+
+export interface BeliefState {
+  status: 'closed' | 'receptive' | 'transformed';
+  currentBelief: string;
+  targetBelief: string;
+  beliefGap: string;
+  bridgeStrategy: string;
+  copyRecommendations: string[];
 }
 
 export interface EmpathyMap {
@@ -149,7 +202,7 @@ export interface MarketIntelligence {
   threats: string[];
 }
 
-// Avatar Bible Types
+// Avatar Bible Types (Manifold)
 export interface ManifoldData {
   buildABuyer: string;
   painMatrix: string;
@@ -165,6 +218,10 @@ export interface ManifoldData {
   languagePatterns: string;
   concentricCircles: string;
   ejectionTriggers: string;
+
+  // Metadata
+  generationTimeSeconds?: number;
+  generationMethod?: 'sequential' | 'swarm';
 }
 
 // Launch Document Types
@@ -182,6 +239,113 @@ export interface LaunchDocSection {
   content: string;
 }
 
+// BLUR Method Types (NEW for EYO)
+export interface BlurReportData {
+  id?: string;
+  projectId: string;
+  reportTitle: string;
+  industry: string;
+  targetMarket: string;
+
+  // Content
+  page1Content: string;           // Visible preview page
+  fullReportContent: string;      // Complete report (behind blur)
+  emailSequence?: string;         // Email copy for BLUR method
+
+  // Design
+  designTemplate?: 'professional' | 'modern' | 'minimal';
+  coverImageUrl?: string;
+
+  // Generated PDF
+  pdfUrl?: string;
+  generatedAt?: string;
+}
+
+// Content Generation Types (NEW for Dashboard)
+export interface ContentGeneration {
+  id: string;
+  projectId: string;
+  contentType: ContentType;
+  variationNumber: number;
+  title: string;
+  content: string;
+  metadata?: Record<string, any>;
+  generatedAt: string;
+}
+
+export type ContentType =
+  | 'ad_script'
+  | 'ad_copy'
+  | 'landing_page'
+  | 'booking_page'
+  | 'thank_you_page'
+  | 'vsl_script'
+  | 'email_sequence'
+  | 'ad_image_specs';
+
+export interface ContentGenerationRequest {
+  projectId: string;
+  contentType: ContentType;
+  variations?: number;  // For ad_script and ad_copy (default 3)
+}
+
+// Lovable Integration Types (NEW)
+export interface LovableDeployment {
+  id: string;
+  projectId: string;
+  contentGenerationId?: string;
+  pageType: 'landing' | 'booking' | 'thank_you';
+  lovableProjectId?: string;
+  deploymentUrl?: string;
+  status: 'pending' | 'building' | 'deployed' | 'failed';
+  errorMessage?: string;
+  createdAt: string;
+  deployedAt?: string;
+}
+
+export interface LovableDeploymentRequest {
+  projectId: string;
+  pageType: 'landing' | 'booking' | 'thank_you';
+  contentGenerationId?: string;
+}
+
+// User & Subscription Types (NEW)
+export interface User {
+  id: string;
+  email: string;
+  fullName?: string;
+  subscriptionTier?: string;
+  subscriptionStatus: 'none' | 'active' | 'canceled' | 'expired';
+  subscriptionStartedAt?: string;
+  subscriptionExpiresAt?: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface SubscriptionStatus {
+  isActive: boolean;
+  status: 'none' | 'active' | 'canceled' | 'expired';
+  expiresAt?: string;
+}
+
+// Usage Tracking Types (NEW)
+export interface UsageRecord {
+  id: number;
+  userId: string;
+  projectId?: string;
+  actionType: string;
+  tokensUsed: number;
+  costUsd: number;
+  createdAt: string;
+}
+
+export interface UsageStats {
+  actionType: string;
+  count: number;
+  totalTokens: number;
+  totalCost: number;
+}
+
 // API Response Types
 export interface ApiResponse<T> {
   success: boolean;
@@ -193,5 +357,6 @@ export interface AnalysisProgress {
   step: string;
   progress: number;
   message: string;
+  currentNode?: string;
 }
 
