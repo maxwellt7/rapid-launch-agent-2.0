@@ -191,5 +191,19 @@ export async function queryLaunchDoc(projectId: string, question: string): Promi
   return response.data.data.answer;
 }
 
+// Content Generation
+export async function generateContent(data: {
+  contentType: 'blur' | 'ad_script' | 'vsl' | 'landing_page' | 'email_sequence';
+  projectId: string;
+  avatar: any;
+  offer: any;
+  [key: string]: any;
+}): Promise<any> {
+  const response = await api.post('/generate/content', data, {
+    timeout: 180000, // 3 minutes for content generation
+  });
+  return response.data;
+}
+
 export default api;
 

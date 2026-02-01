@@ -10,6 +10,7 @@ import Manifold from './pages/Manifold';
 import LaunchDocument from './pages/LaunchDocument';
 import ProjectSummary from './pages/ProjectSummary';
 import Dashboard from './pages/Dashboard';
+import ContentGeneration from './pages/ContentGeneration';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import TermsOfService from './pages/TermsOfService';
 import Pricing from './pages/Pricing';
@@ -107,6 +108,7 @@ function App() {
           <Route path="launch-doc" element={<LaunchDocument />} />
           <Route path="summary" element={<ProjectSummary />} />
           <Route path="dashboard" element={<Dashboard />} />
+          <Route path="content/:contentType" element={<ContentGeneration />} />
         </Route>
       </Routes>
     </Router>
