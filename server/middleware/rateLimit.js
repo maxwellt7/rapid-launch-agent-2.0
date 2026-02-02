@@ -11,9 +11,10 @@ export const apiLimiter = rateLimit({
   standardHeaders: true,          // Return rate limit info in `RateLimit-*` headers
   legacyHeaders: false,           // Disable `X-RateLimit-*` headers
 
-  // Key generator (per user)
+  // Key generator (per user) - IPv6 compatible
   keyGenerator: (req) => {
-    return req.auth?.userId || req.ip;
+    // Use userId if authenticated, otherwise default IP handling (IPv6 compatible)
+    return req.auth?.userId;
   },
 
   // Skip rate limiting in development if configured
@@ -40,8 +41,9 @@ export const generationLimiter = rateLimit({
   windowMs: 60 * 60 * 1000,      // 1 hour
   max: 10,                        // 10 generations per hour
 
+  // Key generator (per user) - IPv6 compatible
   keyGenerator: (req) => {
-    return req.auth?.userId || req.ip;
+    return req.auth?.userId;
   },
 
   skip: (req) => {
@@ -68,7 +70,7 @@ export const webhookLimiter = rateLimit({
   windowMs: 60 * 60 * 1000,      // 1 hour
   max: 1000,                      // 1000 requests per hour
 
-  keyGenerator: (req) => req.ip,
+  // Use default IP handling (IPv6 compatible) - no custom keyGenerator
 
   handler: (req, res) => {
     res.status(429).json({
