@@ -9,6 +9,8 @@
     "preview": "vite preview",
     "server": "node server/index.js",
     "start": "node server/index.js",
+    "migrate": "node server/migrate.js",
+    "deploy": "node server/migrate.js && node server/index.js",
     "type-check": "tsc --noEmit",
     "test:api": "node test-api.js",
     "test": "npm run type-check && npm run build",
