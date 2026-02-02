@@ -488,6 +488,58 @@ export const launchDocDB = {
 };
 
 // =============================================================================
+// CONTENT GENERATION HELPERS
+// =============================================================================
+
+export const contentDB = {
+  // Save generated content
+  async create(projectId, contentType, content, metadata = {}) {
+    const id = `content_${Date.now()}`;
+    const result = await query(
+      `INSERT INTO content_generations (
+        id, project_id, content_type, content, metadata
+      ) VALUES ($1, $2, $3, $4, $5)
+      RETURNING *`,
+      [
+        id,
+        projectId,
+        contentType,
+        JSON.stringify(content),
+        JSON.stringify(metadata),
+      ]
+    );
+    return result.rows[0];
+  },
+
+  // Get content by ID
+  async getById(contentId) {
+    const result = await query(
+      'SELECT * FROM content_generations WHERE id = $1',
+      [contentId]
+    );
+    return result.rows[0];
+  },
+
+  // Get all content for project
+  async getByProject(projectId) {
+    const result = await query(
+      'SELECT * FROM content_generations WHERE project_id = $1 ORDER BY created_at DESC',
+      [projectId]
+    );
+    return result.rows;
+  },
+
+  // Get content by type
+  async getByType(projectId, contentType) {
+    const result = await query(
+      'SELECT * FROM content_generations WHERE project_id = $1 AND content_type = $2 ORDER BY created_at DESC',
+      [projectId, contentType]
+    );
+    return result.rows;
+  },
+};
+
+// =============================================================================
 // USER HELPERS
 // =============================================================================
 
