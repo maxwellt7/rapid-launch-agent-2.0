@@ -31,7 +31,7 @@ A complete full-stack AI-powered marketing automation system with:
 ### ✅ Documentation
 - **README.md** - Complete project documentation
 - **SETUP.md** - Quick setup guide
-- **.env.template** - Environment variable template
+- **.env.example** - Environment variable template
 - **start.sh** - Automated startup script
 - **PROJECT_PLAN.md** - Original comprehensive project plan
 
@@ -73,7 +73,7 @@ rapid-launch-agent/
 │   │   └── helpers.js           Utility functions
 │   └── index.js                 Express server entry
 │
-├── .env.template                Environment variables
+├── .env.example                Environment variables
 ├── start.sh                     Automated startup
 ├── README.md                    Full documentation
 ├── SETUP.md                     Quick setup guide
@@ -136,10 +136,10 @@ rapid-launch-agent/
 ### Quick Start
 ```bash
 # 1. Copy environment template
-cp .env.template .env
+cp .env.example .env
 
-# 2. Add your OpenAI API key to .env
-# OPENAI_API_KEY=sk-...
+# 2. Add your Anthropic API key to .env
+# ANTHROPIC_API_KEY=sk-ant-...
 
 # 3. Install dependencies
 npm install

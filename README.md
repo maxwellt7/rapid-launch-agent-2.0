@@ -48,7 +48,7 @@ An AI-powered marketing automation system that guides you through creating compr
    
    Create a `.env` file in the root directory:
    ```bash
-   cp .env.template .env
+   cp .env.example .env
    ```
    
    Edit `.env` and add your Anthropic API key:

@@ -9,16 +9,16 @@ echo ""
 if [ ! -f .env ]; then
     echo "⚠️  .env file not found!"
     echo "Creating .env from template..."
-    if [ -f .env.template ]; then
-        cp .env.template .env
+    if [ -f .env.example ]; then
+        cp .env.example .env
         echo "✅ .env file created"
-        echo "⚠️  Please edit .env and add your OPENAI_API_KEY"
+        echo "⚠️  Please edit .env and add your ANTHROPIC_API_KEY"
         echo ""
-        echo "Get your API key from: https://platform.openai.com/api-keys"
+        echo "Get your API key from: https://console.anthropic.com/settings/keys"
         echo ""
         read -p "Press Enter after you've added your API key to .env..."
     else
-        echo "❌ .env.template not found!"
+        echo "❌ .env.example not found!"
         exit 1
     fi
 fi

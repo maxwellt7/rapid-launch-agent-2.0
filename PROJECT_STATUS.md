@@ -113,8 +113,8 @@ npm install
 
 ### 2. Configure Environment
 ```bash
-cp .env.template .env
-# Edit .env and add: OPENAI_API_KEY=sk-your-key
+cp .env.example .env
+# Edit .env and add: ANTHROPIC_API_KEY=sk-ant-your-key
 ```
 
 ### 3. Start Application
