@@ -3,7 +3,7 @@
 ## 1. Copy Environment Template
 
 ```bash
-cp .env.template .env
+cp .env.example .env
 ```
 
 ## 2. Add Your Anthropic API Key

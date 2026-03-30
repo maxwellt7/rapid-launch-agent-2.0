@@ -11,7 +11,7 @@ The `.env` file contains secrets and API keys. It is already in `.gitignore` and
 ### 1. Copy the Template
 
 ```bash
-cp .env.template .env
+cp .env.example .env
 ```
 
 ### 2. Fill in Your Keys
