@@ -14,7 +14,7 @@ export async function getGenerationProgressRoute(req, res) {
       });
     }
 
-    const generation = launchDocDB.getGenerationProgress(generationId);
+    const generation = await launchDocDB.getGenerationProgress(generationId);
 
     if (!generation) {
       return res.status(404).json({
@@ -24,7 +24,7 @@ export async function getGenerationProgressRoute(req, res) {
     }
 
     // Get completed sections
-    const sections = launchDocDB.getSections(generationId);
+    const sections = await launchDocDB.getSections(generationId);
 
     res.json({
       success: true,
@@ -67,7 +67,7 @@ export async function getLatestGenerationRoute(req, res) {
       });
     }
 
-    const generation = launchDocDB.getLatestGeneration(projectId);
+    const generation = await launchDocDB.getLatestGeneration(projectId);
 
     if (!generation) {
       return res.json({
@@ -77,7 +77,7 @@ export async function getLatestGenerationRoute(req, res) {
     }
 
     // Get completed sections
-    const sections = launchDocDB.getSections(generation.id);
+    const sections = await launchDocDB.getSections(generation.id);
 
     res.json({
       success: true,

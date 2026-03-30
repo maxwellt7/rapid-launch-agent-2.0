@@ -408,9 +408,9 @@ export const launchDocDB = {
   },
 
   // Create new generation
-  createGeneration(projectId) {
+  async createGeneration(projectId) {
     const id = `gen_${Date.now()}`;
-    query(
+    await query(
       `INSERT INTO launch_doc_generations (id, project_id, status, total_sections, completed_sections)
        VALUES ($1, $2, 'pending', 38, 0)`,
       [id, projectId]
@@ -419,8 +419,8 @@ export const launchDocDB = {
   },
 
   // Update generation status
-  updateGenerationStatus(generationId, status, errorMessage = null) {
-    query(
+  async updateGenerationStatus(generationId, status, errorMessage = null) {
+    await query(
       `UPDATE launch_doc_generations
        SET status = $1, error_message = $2, completed_at = CASE WHEN $1 IN ('completed', 'failed') THEN NOW() ELSE NULL END
        WHERE id = $3`,

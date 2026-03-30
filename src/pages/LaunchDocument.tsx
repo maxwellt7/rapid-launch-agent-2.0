@@ -334,22 +334,25 @@ export default function LaunchDocument() {
                 Table of Contents ({launchDoc.sections.length} sections)
               </h3>
               <div className="space-y-1 max-h-[600px] overflow-y-auto">
-                {(searchTerm ? filteredSections : launchDoc.sections).map((section, index) => (
+                {(searchTerm ? filteredSections : launchDoc.sections).map((section) => {
+                  const actualIndex = launchDoc.sections.findIndex(s => s.id === section.id);
+                  return (
                   <button
                     key={section.id}
                     onClick={() => {
-                      setSelectedSection(index);
+                      setSelectedSection(actualIndex);
                       setSearchTerm('');
                     }}
                     className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-colors ${
-                      selectedSection === index
+                      selectedSection === actualIndex
                         ? 'bg-primary-100 text-primary-900 font-medium'
                         : 'hover:bg-gray-100 text-gray-700'
                     }`}
                   >
                     {section.id}. {section.title}
                   </button>
-                ))}
+                  );
+                })}
               </div>
 
               <div className="mt-4 pt-4 border-t border-gray-200">
