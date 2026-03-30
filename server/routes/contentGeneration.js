@@ -48,12 +48,7 @@ export async function generateContentRoute(req, res) {
 
     // Save to database if projectId provided
     if (projectId) {
-      await contentDB.create({
-        projectId,
-        contentType,
-        contentJson: result,
-        status: 'completed',
-      });
+      await contentDB.create(projectId, contentType, result, { status: 'completed' });
 
       console.log(`✅ Content saved to database for project ${projectId}`);
     }
@@ -112,9 +107,9 @@ export async function listContentRoute(req, res) {
 
     let contents;
     if (contentType) {
-      contents = await contentDB.listByProjectAndType(projectId, contentType);
+      contents = await contentDB.getByType(projectId, contentType);
     } else {
-      contents = await contentDB.listByProject(projectId);
+      contents = await contentDB.getByProject(projectId);
     }
 
     res.json({

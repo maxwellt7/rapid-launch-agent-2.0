@@ -33,7 +33,7 @@ export default function OfferBuilder() {
     setLoading(true);
     try {
       const analysis = await analyzeOffer(formData);
-      const updatedData = { ...formData, analysis };
+      const updatedData = { ...formData, analysisJson: analysis };
       updateOffer(updatedData);
       setFormData(updatedData);
       

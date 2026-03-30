@@ -98,7 +98,7 @@ async function runGenerationInBackground(generationId, context, completedSection
       const content = await generateSection(sectionData, context);
 
       // Save section to database immediately
-      launchDocDB.saveSection(
+      await launchDocDB.saveSection(
         generationId,
         sectionData.id,
         sectionData.title,
@@ -110,12 +110,12 @@ async function runGenerationInBackground(generationId, context, completedSection
     }
 
     // Mark generation as completed
-    launchDocDB.updateGenerationStatus(generationId, 'completed');
+    await launchDocDB.updateGenerationStatus(generationId, 'completed');
     console.log('✅ Launch Document Generation Complete');
   } catch (error) {
     console.error('Background generation error:', error);
     // Mark generation as failed
-    launchDocDB.updateGenerationStatus(generationId, 'failed', error.message);
+    await launchDocDB.updateGenerationStatus(generationId, 'failed', error.message);
   }
 }
 
@@ -140,29 +140,29 @@ export async function generateLaunchDocRoute(req, res) {
     console.log('📄 Starting Launch Document Generation...');
 
     // Ensure project exists in database (create if needed)
-    launchDocDB.ensureProjectExists(projectId, offer.targetMarket || 'Unnamed Project');
+    await launchDocDB.ensureProjectExists(projectId, offer.targetMarket || 'Unnamed Project');
 
     let generationId;
     let completedSections = new Set();
 
     // Check if we're resuming an existing generation
     if (resume) {
-      const latestGen = launchDocDB.getLatestGeneration(projectId);
+      const latestGen = await launchDocDB.getLatestGeneration(projectId);
       if (latestGen && latestGen.status !== 'completed') {
         generationId = latestGen.id;
-        completedSections = new Set(launchDocDB.getCompletedSectionNumbers(generationId));
+        completedSections = new Set(await launchDocDB.getCompletedSectionNumbers(generationId));
         console.log(`📝 Resuming generation ${generationId} (${completedSections.size} sections already completed)`);
       }
     }
 
     // Create new generation if not resuming
     if (!generationId) {
-      generationId = launchDocDB.createGeneration(projectId);
+      generationId = await launchDocDB.createGeneration(projectId);
       console.log(`🆕 Created new generation: ${generationId}`);
     }
 
     // Update status to in_progress
-    launchDocDB.updateGenerationStatus(generationId, 'in_progress');
+    await launchDocDB.updateGenerationStatus(generationId, 'in_progress');
 
     const context = {
       offer,

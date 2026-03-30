@@ -202,7 +202,7 @@ export async function generateContent(data: {
   const response = await api.post('/generate/content', data, {
     timeout: 180000, // 3 minutes for content generation
   });
-  return response.data;
+  return response.data.data;
 }
 
 export default api;

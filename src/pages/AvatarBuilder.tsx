@@ -86,7 +86,7 @@ export default function AvatarBuilder() {
       };
       
       const analysis = await analyzeAvatar(avatarData);
-      updateAvatar({ ...avatarData, ...analysis });
+      updateAvatar({ ...avatarData, ...analysis, analysisJson: analysis });
       
       // Update local state with analysis results
       if (analysis.primaryCurrency) {
